@@ -1,0 +1,61 @@
+:root {
+    --main_color: #007bff ;
+  }
+
+.full_container
+{
+    display: flex;
+}
+.admin_content
+{
+    width: 100%;
+}
+.admin_nav
+{
+    background-color: var(--main_color);
+    text-align: start;
+    width:250px;
+    transition: all ease-in-out .3s;
+
+}
+.admin_nav_color
+{
+    background-color: var(--main_color);
+}
+.admin_nav_close
+{
+    width: 70px;
+    text-align: center;
+}
+.nav_title
+{
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    
+}
+.title_text
+{
+    padding-top: 15px;
+}
+.Admin_link
+{
+    color: white;
+    padding: 15px;
+    
+    margin: 5px;
+    border-radius: 5px;
+    transition: all ease-in-out .3s;
+}
+.link_text
+{
+    margin: 0px;
+    display: inline-block;
+    padding: 0px 10px;
+}
+.Admin_link:hover
+{
+    color: white;
+    background-color: #6e6e6ebf ;
+}
