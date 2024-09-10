@@ -1,6 +1,11 @@
+:root {
+    --main_color: #d9b056 ;
+    --sec_color:#1e592c;
+  }
 .footer  {
-    background: radial-gradient(circle, rgb(255 255 255 / 16%) 0%, rgb(0 123 255 / 16%) 43%, rgb(60 165 255 / 11%) 66%, rgb(0 212 255 / 8%) 100%);
+    background: radial-gradient(circle, rgba(255,255,255,0.5971638655462185) 0%, rgba(237,219,177,0.8744747899159664) 30%, rgba(217,176,86,0.8212535014005602) 65%, rgba(30,89,44,0.8044467787114846) 140%);
     padding: 10px;
+    margin-top: 50px;
 }
 .footer_link 
 {
@@ -27,4 +32,15 @@
 .i_link:hover
 {
     color: #E1306C;
+}
+.logo_img
+{
+    width: 132px;
+    height: 44px;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+    filter: drop-shadow(2px 2px 10px white);
 }

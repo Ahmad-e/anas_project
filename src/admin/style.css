@@ -1,5 +1,6 @@
 :root {
-    --main_color: #007bff ;
+    --main_color: #d9b056 ;
+    --sec_color:#1e592c;
   }
 
 .full_container
@@ -16,7 +17,6 @@
     text-align: start;
     width:250px;
     transition: all ease-in-out .3s;
-
 }
 .admin_nav_color
 {
@@ -33,11 +33,11 @@
     display: flex;
     justify-content: space-between;
     padding: 15px;
-    
 }
 .title_text
 {
     padding-top: 15px;
+    
 }
 .Admin_link
 {
@@ -56,6 +56,39 @@
 }
 .Admin_link:hover
 {
-    color: white;
-    background-color: #6e6e6ebf ;
+    color: var(--sec_color);
+    background-color: #6e6e6e2d ;
+}
+.table_img
+{
+    width: 80px;
+    height: 45px;
+    border-radius: 5px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+}
+.table_user_img
+{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+}
+
+@media only screen and (max-width: 750px) {
+    .admin_nav
+    {
+        position: absolute;
+        z-index: 4;
+    }
+    .dash_component
+    {
+        padding-left: 55px;
+        padding-right: 45px;
+    }
 }

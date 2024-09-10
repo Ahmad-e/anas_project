@@ -12,7 +12,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
+import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 
 const Register=()=>{
 
@@ -69,6 +69,11 @@ const Register=()=>{
                 
                 <div className="auth_box m_t_50" >
                 <h4>create new account</h4>
+                <div className=" p_t_30 p_10">
+                    <label> Add image</label> <br/> 
+                    <input className="dn" accept="image/*"  type="file" id="inputFile1" />
+                    <label className="btn-primary btn" for="inputFile1" > Upload image <FileUploadRoundedIcon/> </label>
+                </div>
                     <TextField
                         type='email'
                         label="email"

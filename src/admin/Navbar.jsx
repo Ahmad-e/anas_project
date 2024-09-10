@@ -14,6 +14,7 @@ import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import ContactMailOutlinedIcon from '@mui/icons-material/ContactMailOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 const NavBar=()=>{
 
     const [open,setOpen] = useState(true);
@@ -29,10 +30,10 @@ const NavBar=()=>{
     return(
         <div className={'admin_nav '+(open ? ('') : ('admin_nav_close'))} >
             <div className='nav_title'>
-                <p className={"title_text "+(open ? (''):('dn'))} >The Contributions </p>
-                <IconButton onClick={()=>tuggleOppen()}>
+                <p className={"sec_color title_text "+(open ? (''):('dn'))} >Equivalent Forearms </p>
+                <IconButton className='sec_color' onClick={()=>tuggleOppen()}>
                     {
-                        open ? (<KeyboardDoubleArrowLeftOutlinedIcon sx={{ fontSize: 30 }}/>):(<KeyboardDoubleArrowRightOutlinedIcon sx={{ fontSize: 30 }}/>)
+                        open ? (<KeyboardDoubleArrowLeftOutlinedIcon className='sec_color' sx={{ fontSize: 30 }}/>):(<KeyboardDoubleArrowRightOutlinedIcon className='sec_color' sx={{ fontSize: 30 }}/>)
                     }
                       </IconButton>
             </div>
@@ -41,26 +42,30 @@ const NavBar=()=>{
                  <MapsHomeWorkOutlinedIcon/>
                  <p className={"link_text "+(open ? (''):('dn'))}>Home</p>
                  </Nav.Link>
-            <Nav.Link className='Admin_link' href="./home">
+            <Nav.Link className='Admin_link' href="./family">
                 <FamilyRestroomOutlinedIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}>Families</p>
                 </Nav.Link>
-            <Nav.Link className='Admin_link' href="./home">
+            <Nav.Link className='Admin_link' href="./users">
                 <GroupAddOutlinedIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}>Users</p>
                 </Nav.Link>
-            <Nav.Link className='Admin_link' href="./home">
+            <Nav.Link className='Admin_link' href="./contributions">
                 <ContactMailOutlinedIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}>Contributions</p>
                 </Nav.Link>
-            <Nav.Link className='Admin_link' href="./home">
+            <Nav.Link className='Admin_link' href="./expensess">
                 <MonetizationOnOutlinedIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}>expenses</p>
-                </Nav.Link>
-            <Nav.Link className='Admin_link' href="./home">
+            </Nav.Link>
+            <Nav.Link className='Admin_link' href="./zakat">
                 <CalculateOutlinedIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}>Zakat</p>
-                </Nav.Link>
+            </Nav.Link>
+            <Nav.Link className='Admin_link' href="./ads">
+                <ViewCarouselIcon />
+                <p className={"link_text "+(open ? (''):('dn'))}>advertisement</p>
+            </Nav.Link>
         </div>
     )
 }

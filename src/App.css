@@ -5,7 +5,8 @@
 }
 
 :root {
-  --main_color: #007bff ;
+  --main_color: #d9b056 ;
+  --sec_color:#1e592c;
 }
 .dark
 {
@@ -22,6 +23,10 @@
 {
   color:var(--main_color)
 }
+.sec_color
+{
+  color:var(--sec_color)
+}
 .p_t_50
 {
   padding-top: 50px;
@@ -37,6 +42,10 @@
 .m_t_30
 {
   margin-top: 30px;
+}
+.p_10
+{
+  padding: 10px;
 }
 hr
 {
@@ -55,3 +64,30 @@ hr
 .dn{
   display: none;
 }
+.btn-primary  {
+  color: #fff;
+  background-color: var(--main_color);
+  border-color: var(--main_color);
+  transition: all ease-in-out .4s;
+}
+.btn-primary:hover {
+  color: var(--sec_color);
+  background-color: var(--main_color);
+  border-color: var(--main_color);
+  transform: scale(1.04);
+}
+
+.btn-outline-primary {
+  color: var(--main_color);
+  border-color: var(--main_color);
+}
+.btn-outline-primary:hover {
+  color: var(--sec_color);
+  background-color: var(--main_color);
+  border-color: var(--main_color);
+}
+
+.css-10o2lyd-MuiStack-root>:not(style):not(style) {
+      margin: 0;
+      width: 100%;
+  }

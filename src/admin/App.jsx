@@ -6,7 +6,7 @@ const Home=()=>{
 
     return(
         <div className='full_container'>
-            <div className='admin_nav_color'>
+            <div className=' '>
                 <NavBar/>
             </div>
             <div className='admin_content'>

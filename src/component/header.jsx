@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
+import Logo from '../images/logo.png'
 
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -34,7 +34,7 @@ const Header=()=>{
                 aria-label="menu"
                 sx={{ mr: 2 }}
                 >
-                    <MenuIcon />
+                    <img className='logo_img' src={Logo} />
                 </IconButton>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 

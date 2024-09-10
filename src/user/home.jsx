@@ -64,12 +64,6 @@ const Home=()=>{
                     </Carousel.Item>
                 </Carousel>
                 
-            
-            <div  className='sq'>
-                <svg  width="756px" height="756px" viewBox="0 0 16.00 16.00"  stroke-width="0.00016"> 
-                    <g id="SVGRepo_iconCarrier"> <rect width="14" height="14" fill="#6c757d70"/> </g>
-                </svg>
-            </div>  
             <Container >
                 
                 <Row style={{ zIndex:2 }}  className='m_t_50 justify-content-center'>
@@ -78,7 +72,7 @@ const Home=()=>{
                     </Col>
                     <Col style={{ textAlign:"start" }} lg={6}md={4} xs={12}>
                         <h3 className='main_color home_text'>
-                            test Text
+                        Equivalent Forearms
                         </h3>
                         <p>
                         A website dedicated to the family concerned with studying and analyzing donations, private and internal expenses, and calculating the imposed zakat
@@ -89,6 +83,11 @@ const Home=()=>{
                     <hr/>    
                 </Row>
                 <Row style={{ zIndex:2 }} className='m_t_50 justify-content-center'>
+                    <Col lg={12} sm={12}>
+                        <h3 className='main_color'>
+                            Most prominent contributors
+                        </h3>
+                    </Col>
                     <Col className='m_t_50' lg={4} sm={6} xs={12}>
                         <Card  image={"https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"} name={"Ahmad"} email={"homseahmad07@gmail.com"} />
                     </Col>

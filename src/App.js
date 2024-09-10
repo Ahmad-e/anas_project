@@ -8,13 +8,21 @@ import Header from './component/header';
 import Footer from './component/footer';
 import Register from './user/register';
 import Home from './user/home'
-
 import Login from './user/login';
+
+
 import AdminHome from './admin/home';
 import AdminApp from './admin/App';
+import Ads from './admin/ads';
+import Contributions from './admin/contributions';
+import Expensess from './admin/expensess';
+import Family from './admin/family';
+import Users from './admin/users';
+import Zakat from './admin/zakat';
+
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import { useSelector } from 'react-redux';
 
 const darkTheme = createTheme({
@@ -42,6 +50,12 @@ function App() {
               <Route path="login" element={<Login />} />
 
               <Route path="admin" element={<AdminApp />} >
+                <Route path="zakat" element={<Zakat />}  />
+                <Route path="contributions" element={<Contributions />}  />
+                <Route path="ads" element={<Ads />}  />
+                <Route path="family" element={<Family />}  />
+                <Route path="users" element={<Users />}  />
+                <Route path="expensess" element={<Expensess />}  />
                 <Route path="home" element={<AdminHome />}  />
               </Route>
           </Routes>

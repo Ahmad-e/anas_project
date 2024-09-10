@@ -1,3 +1,8 @@
+:root {
+  --main_color: #d9b056 ;
+  --sec_color:#1e592c;
+}
+
 /*  start auth style */
 
 .auth_box
@@ -45,6 +50,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
+
 }
 
 .carousel-indicators .active
@@ -101,7 +107,8 @@
     height: 200px;
     border-radius: 50%;
     overflow: hidden;
-    border: 10px solid rgba(0, 0, 0, 0.2);
+    border: 7px double var(--main_color);
+    border-color: var(--main_color) var(--main_color) var(--sec_color) var(--sec_color);
   }
   .card-image img {
     object-fit: cover;
