@@ -39,9 +39,9 @@ const Header=()=>{
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 
                 </Typography>
-                <Button  style={{ margin:"4px" }} color="inherit">SIGN OUT</Button>
-                <Button  href='./login' style={{ margin:"4px"}} color="inherit">sign in</Button>
-                <B_Button href='./register' style={{ margin:"4px" }} color="inherit">SIGN UP</B_Button>
+                <Button  style={{ margin:"4px" }} color="inherit">تسجيل خروج</Button>
+                <Button  href='./login' style={{ margin:"4px"}} color="inherit">تسجيل دخول</Button>
+                <B_Button href='./register' style={{ margin:"4px" }} color="inherit">حساب جديد</B_Button>
 
                 <IconButton
                 style={{ margin:"4px" }}

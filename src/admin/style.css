@@ -13,6 +13,8 @@
 }
 .admin_nav
 {
+    border-radius: 0px 0px 0px 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-color: var(--main_color);
     text-align: start;
     width:250px;
@@ -88,7 +90,26 @@
     }
     .dash_component
     {
-        padding-left: 55px;
-        padding-right: 45px;
+        padding-left: 45px;
+        padding-right: 55px;
+
     }
 }
+/* start Admin style*/
+
+.Admin_info_component
+{
+    padding: 20px;
+    margin: 10px;
+    background: rgb(30,89,44);
+    background: linear-gradient(90deg, rgba(30,89,44,0.6) 0%, rgba(217,176,86,0.75) 100%);
+    border-radius: 10px;
+    height: 140px;
+    overflow: hidden;
+    text-align: start;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+}
+

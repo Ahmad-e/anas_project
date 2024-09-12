@@ -51,7 +51,7 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-export default function Ads() {
+export default function Types() {
   return (
     <Container>
       <Row className='fullWidth m_t_50 justify-content-center'>
@@ -60,22 +60,18 @@ export default function Ads() {
             <Table >
               <TableHead >
                 <TableRow>
-                  <TableCell align="center"> صورة الإعلان </TableCell>
-                  <TableCell align="center"> النص التعريفي </TableCell>
-                  <TableCell align="center"> رقم </TableCell>
-                  <TableCell align="center"> حذف الإعلان </TableCell>
+                  <TableCell align="center"> اسم الحالة </TableCell>
+                  <TableCell align="center"> الرقم </TableCell>
+                  <TableCell align="center"> تعديل البيانات </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row) => (
                   <StyledTableRow key={row.name}>
-                    <StyledTableCell align="center">
-                      <img className="table_img" src={Img} />
-                    </StyledTableCell>
                     <StyledTableCell align="center">{row.fat}</StyledTableCell>
                     <StyledTableCell align="center">{row.carbs}</StyledTableCell>
                     <StyledTableCell align="center"> 
-                      <Button  variant="outline-primary" >حذف</Button>
+                      <Button  variant="outline-primary" >تعديل</Button>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
@@ -84,14 +80,12 @@ export default function Ads() {
           </TableContainer>
         </Col>
         <Col className="dash_component" lg={4} md={3} sm={12} >
-          <div className=" p_t_30 p_10">
-            <label> أضف صورة للإعلان </label><br/>
-            <input className="dn" accept="image/*"  type="file" id="inputFile1" />
-            <label className="btn-primary btn" for="inputFile1" > رفع صورة <FileUploadRoundedIcon/> </label>
-          </div>
           <div className="p_10">
-            <label> أضف نص توضيحي فوق الصورة </label>
-            <TextField multiline minRows={3} fullWidth id="outlined-basic" label="النص التعريفي" variant="outlined" />
+            <label>  أدخل اسم لحالة التبرع </label>
+            <TextField  fullWidth id="outlined-basic" label="حالة التبرع" variant="outlined" />
+          </div>
+          <div>
+            <Button className="m_t_30"> حفظ البيانات </Button>
           </div>
         </Col>
       </Row>

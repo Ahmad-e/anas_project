@@ -72,20 +72,20 @@ const Home=()=>{
                     </Col>
                     <Col style={{ textAlign:"start" }} lg={6}md={4} xs={12}>
                         <h3 className='main_color home_text'>
-                        Equivalent Forearms
+                        سواعد متكاتفة 
                         </h3>
                         <p>
-                        A website dedicated to the family concerned with studying and analyzing donations, private and internal expenses, and calculating the imposed zakat
+                        موقع مخصص للأسرة يهتم بدراسة وتحليل التبرعات والمصروفات الخاصة والداخلية وحساب الزكاة المفروضة
                         </p>
                     </Col>
                 </Row>
-                <Row style={{ zIndex:2 }}  className='m_t_50 fullWidth justify-content-center'>
+                <Row style={{ zIndex:2 }}  className='m_t_50 p_t_30 fullWidth justify-content-center'>
                     <hr/>    
                 </Row>
                 <Row style={{ zIndex:2 }} className='m_t_50 justify-content-center'>
                     <Col lg={12} sm={12}>
                         <h3 className='main_color'>
-                            Most prominent contributors
+                            الأعضاء الأكثر  مساهمة 
                         </h3>
                     </Col>
                     <Col className='m_t_50' lg={4} sm={6} xs={12}>

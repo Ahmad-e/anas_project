@@ -76,28 +76,28 @@ export default function users() {
             <Table >
               <TableHead >
                 <TableRow>
-                  <TableCell align="start"> image </TableCell>
-                  <TableCell align="start"> name </TableCell>
-                  <TableCell align="start"> email </TableCell>
-                  <TableCell align="start"> family </TableCell>
-                  <TableCell align="start"> change </TableCell>
-                  <TableCell align="start"> delete </TableCell>
+                  <TableCell align="center"> الصورة الشخصية </TableCell>
+                  <TableCell align="center"> الاسم </TableCell>
+                  <TableCell align="center"> الأيميل </TableCell>
+                  <TableCell align="center"> اسم العائلة </TableCell>
+                  <TableCell align="center"> تعديل البيانات </TableCell>
+                  <TableCell align="center"> حذف المستخدم </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row) => (
                   <StyledTableRow key={row.name}>
-                    <StyledTableCell align="start">
+                    <StyledTableCell align="center">
                       <img className="table_user_img" src={Img} />
                     </StyledTableCell>
-                    <StyledTableCell align="start">{row.fat}</StyledTableCell>
-                    <StyledTableCell align="start">{row.carbs}</StyledTableCell>
-                    <StyledTableCell align="start">{row.carbs}</StyledTableCell>
-                    <StyledTableCell align="start"> 
-                      <Button  variant="outline-primary" >change</Button>
+                    <StyledTableCell align="center">{row.fat}</StyledTableCell>
+                    <StyledTableCell align="center">{row.carbs}</StyledTableCell>
+                    <StyledTableCell align="center">{row.carbs}</StyledTableCell>
+                    <StyledTableCell align="center"> 
+                      <Button  variant="outline-primary" >تعديل</Button>
                     </StyledTableCell>
-                    <StyledTableCell align="start"> 
-                      <Button  variant="outline-primary" >delete</Button>
+                    <StyledTableCell align="center"> 
+                      <Button  variant="outline-primary" >حذف</Button>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

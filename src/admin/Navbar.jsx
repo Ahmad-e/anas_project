@@ -30,41 +30,41 @@ const NavBar=()=>{
     return(
         <div className={'admin_nav '+(open ? ('') : ('admin_nav_close'))} >
             <div className='nav_title'>
-                <p className={"sec_color title_text "+(open ? (''):('dn'))} >Equivalent Forearms </p>
+                <p className={"sec_color title_text "+(open ? (''):('dn'))} > لوحة إدارة سواعد </p>
                 <IconButton className='sec_color' onClick={()=>tuggleOppen()}>
                     {
-                        open ? (<KeyboardDoubleArrowLeftOutlinedIcon className='sec_color' sx={{ fontSize: 30 }}/>):(<KeyboardDoubleArrowRightOutlinedIcon className='sec_color' sx={{ fontSize: 30 }}/>)
+                        !open ? (<KeyboardDoubleArrowLeftOutlinedIcon className='sec_color' sx={{ fontSize: 30 }}/>):(<KeyboardDoubleArrowRightOutlinedIcon className='sec_color' sx={{ fontSize: 30 }}/>)
                     }
                       </IconButton>
             </div>
             
             <Nav.Link className='Admin_link ' href="./home">
                  <MapsHomeWorkOutlinedIcon/>
-                 <p className={"link_text "+(open ? (''):('dn'))}>Home</p>
+                 <p className={"link_text "+(open ? (''):('dn'))}>الرئيسية</p>
                  </Nav.Link>
             <Nav.Link className='Admin_link' href="./family">
                 <FamilyRestroomOutlinedIcon/>
-                <p className={"link_text "+(open ? (''):('dn'))}>Families</p>
+                <p className={"link_text "+(open ? (''):('dn'))}>العائلات</p>
                 </Nav.Link>
             <Nav.Link className='Admin_link' href="./users">
                 <GroupAddOutlinedIcon/>
-                <p className={"link_text "+(open ? (''):('dn'))}>Users</p>
+                <p className={"link_text "+(open ? (''):('dn'))}>المستخدمين</p>
                 </Nav.Link>
             <Nav.Link className='Admin_link' href="./contributions">
                 <ContactMailOutlinedIcon/>
-                <p className={"link_text "+(open ? (''):('dn'))}>Contributions</p>
+                <p className={"link_text "+(open ? (''):('dn'))}>المساهمات</p>
                 </Nav.Link>
             <Nav.Link className='Admin_link' href="./expensess">
                 <MonetizationOnOutlinedIcon/>
-                <p className={"link_text "+(open ? (''):('dn'))}>expenses</p>
+                <p className={"link_text "+(open ? (''):('dn'))}>المصاريف</p>
             </Nav.Link>
             <Nav.Link className='Admin_link' href="./zakat">
                 <CalculateOutlinedIcon/>
-                <p className={"link_text "+(open ? (''):('dn'))}>Zakat</p>
+                <p className={"link_text "+(open ? (''):('dn'))}>الزكاة</p>
             </Nav.Link>
             <Nav.Link className='Admin_link' href="./ads">
                 <ViewCarouselIcon />
-                <p className={"link_text "+(open ? (''):('dn'))}>advertisement</p>
+                <p className={"link_text "+(open ? (''):('dn'))}>الإعلانات و المناسبات</p>
             </Nav.Link>
         </div>
     )

@@ -18,7 +18,7 @@ import Contributions from './admin/contributions';
 import Expensess from './admin/expensess';
 import Family from './admin/family';
 import Users from './admin/users';
-import Zakat from './admin/zakat';
+import Zakat from './admin/types';
 
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -29,11 +29,18 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
+  typography: {
+    fontFamily: ['"Droid Arabic Kufi"', 'serif'].join(',')
+    
+   }
 });
 const lightTheme = createTheme({
   palette: {
     mode: 'light',
   },
+  typography: {
+    fontFamily: ['"Droid Arabic Kufi"', 'serif'].join(',')
+   }
 });
 
 
@@ -41,7 +48,7 @@ function App() {
   const mode = useSelector((state) => state.mode);
   return (
     <ThemeProvider theme={ mode==="dark" ? darkTheme : lightTheme}>
-    <div className={'App '+mode}>
+    <div dir='rtl' className={'App '+mode}>
       <BrowserRouter >
         <Header />
           <Routes>

@@ -77,26 +77,24 @@ export default function Contributions() {
             <Table >
               <TableHead >
                 <TableRow>
-                  <TableCell align="start"> id </TableCell>
-                  <TableCell align="start"> user name </TableCell>
-                  <TableCell align="start"> type </TableCell>
-                  <TableCell align="start"> Total amount </TableCell>
-                  <TableCell align="start"> change data </TableCell>
-                  <TableCell align="start"> delete </TableCell>
+                  <TableCell align="center"> رقم </TableCell>
+                  <TableCell align="center"> نوعية النفقة </TableCell>
+                  <TableCell align="center"> المبلغ </TableCell>
+                  <TableCell align="center"> تعديل البيانات </TableCell>
+                  <TableCell align="center"> حذف البيانات </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row) => (
                   <StyledTableRow key={row.name}>
-                    <StyledTableCell align="start">{row.fat}</StyledTableCell>
-                    <StyledTableCell align="start">{row.fat}</StyledTableCell>
-                    <StyledTableCell align="start">{row.carbs}</StyledTableCell>
-                    <StyledTableCell align="start">100</StyledTableCell>
-                    <StyledTableCell align="start"> 
-                      <Button  variant="outline-primary" >change</Button>
+                    <StyledTableCell align="center">{row.fat}</StyledTableCell>
+                    <StyledTableCell align="center">{row.carbs}</StyledTableCell>
+                    <StyledTableCell align="center">100</StyledTableCell>
+                    <StyledTableCell align="center"> 
+                      <Button  variant="outline-primary" >تعديل</Button>
                     </StyledTableCell>
-                    <StyledTableCell align="start"> 
-                      <Button  variant="outline-primary" >delete</Button>
+                    <StyledTableCell align="center"> 
+                      <Button  variant="outline-primary" >حذف</Button>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
@@ -108,12 +106,12 @@ export default function Contributions() {
           
           <div className=" p_10">
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Donation  type</InputLabel>
+              <InputLabel id="demo-simple-select-label"> نوعية النفقة </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={userId}
-                label="user name"
+                label="نوعية النفقة"
                 onChange={handleChangeUserId}
               >
                 <MenuItem value={10}>تبرع لمسجد</MenuItem>
@@ -126,16 +124,19 @@ export default function Contributions() {
 
           </div>
           <div className="p_10">
-            <label> Add total amount </label>
-            <TextField type="number"  fullWidth id="outlined-basic" label="total" variant="outlined" />
+            <label> المبلغ </label>
+            <TextField type="number"  fullWidth id="outlined-basic" label="المبلغ" variant="outlined" />
           </div>
           <div className="p_10"> 
-            <label> The date of the operation </label>
+            <label> تاريخ الإنفاق </label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DatePicker']}>
-                <DatePicker label="date of" />
+                <DatePicker label="" />
               </DemoContainer>
             </LocalizationProvider>
+          </div>
+          <div>
+            <Button className="m_t_30"> حفظ البيانات </Button>
           </div>
         </Col>
       </Row>

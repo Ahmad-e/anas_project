@@ -55,21 +55,21 @@ const Login=()=>{
             <Row className='justify-content-center' >
                 
                 <div className="auth_box m_t_50" >
-                <h4>create new account</h4>
+                <h4>تسجيل الدخول</h4>
                     <TextField
                         
                         id="standard-required"
-                        label="name"
+                        label="الاسم"
                         variant="standard"
                         fullWidth
                         value={name}
                         onChange={handleChangeName}
                         error={errName}
                         />
-                    <div  className={errName ? 'auth_lable ' : 'auth_lable hidd' }> The name must be greater than two letters  </div>
+                    <div  className={errName ? 'auth_lable ' : 'auth_lable hidd' }> الاسم يجب أن يكون 3 حروف على الأقل  </div>
 
                     <FormControl fullWidth variant="standard">
-                        <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                        <InputLabel htmlFor="standard-adornment-password">كلمة السر</InputLabel>
                         <Input
                             
                             id="standard-adornment-password"
@@ -77,8 +77,8 @@ const Login=()=>{
                             value={password}
                             onChange={handleChangepassword}
                             error={errPassword}
-                            endAdornment={
-                            <InputAdornment position="end">
+                            startAdornment={
+                            <InputAdornment position="start">
                                 <IconButton
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
@@ -93,13 +93,13 @@ const Login=()=>{
                             }
                             
                         />
-                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }>Password must be at least 8 characters </div>
+                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }>كلمة السر يجب أن تكون 8 رموز على الأقل </div>
                     </FormControl>
                     <br/>
                     <br/>
                     <br/>
 
-                    <Button className='auth_button' variant="primary">Log In</Button>
+                    <Button className='auth_button' variant="primary">تسجيل الدخول</Button>
 
                 </div>
             </Row>

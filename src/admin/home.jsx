@@ -9,19 +9,76 @@ import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 
 import Loading from '../component/loading';
 
+import ContactMailOutlinedIcon from '@mui/icons-material/ContactMailOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
+
+
+
 const Home = () => {
   return (
     <Container>
-      <Row>
+      <Loading loading={false}/>
+      <Row className=' justify-content-center'>
         <Col className="p_t_50" lg={12} md={12} >
+          <p>أدخل المدة الزمنية التي تريد تخريج تقرير ضمنها</p>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateRangePicker']}>
-              <DateRangePicker localeText={{ start: 'Check-in', end: 'Check-out' }} />
+              <DateRangePicker localeText={{ start: 'تاريخ البداية', end: 'تاريخ النهاية' }} />
             </DemoContainer>
           </LocalizationProvider>
         </Col>
-        <Col>
-          <Loading/>
+      </Row>
+      <Row className='fullWidth m_t_50 justify-content-center'>
+        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+          <div >
+            <p> المستخدمين الجدد </p>
+            <h3>5</h3>
+          </div>
+          <div >
+            <ContactMailOutlinedIcon style={{  fontSize:"40px" ,marginTop:"-3px" }}/>
+          </div>
+        </Col>
+        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+          <div>
+            <p> المصاريف </p>
+            <h3>21312</h3>
+          </div>
+          <div>
+            <CalculateOutlinedIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
+          </div>
+        </Col>
+        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+          <div>
+            <p> المساهمات </p>
+            <h3>21312</h3>
+          </div>
+          <div>
+            <MonetizationOnOutlinedIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
+          </div>
+        </Col>
+        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+          <div>
+            <p> الزكاة المدفوعة </p>
+            <h3>21312</h3>
+          </div>
+          <div>
+            <PlaylistAddIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
+          </div>
+
+        </Col>
+        <Col lg={6} md={8} sm={6} xs={8} className="Admin_info_component">
+          <div>
+            <p> الزكاة المفروضة و غير المدفوعة </p>
+            <h2 style={{ fontWeight:"bolder" }}>21312</h2>
+          </div>
+
+          <div>
+            <DomainVerificationIcon style={{ fontSize:"65px" ,marginTop:"-6px" }}/>
+          </div>
+          
         </Col>
       </Row>
     </Container>

@@ -1,5 +1,7 @@
+@import url(https://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+
 .App {
-  font-family: "Noto Sans", sans-serif;
+  font-family: 'Droid Arabic Kufi', serif;
   text-align: center;
   min-height: 680px;
 }
@@ -91,3 +93,7 @@ hr
       margin: 0;
       width: 100%;
   }
+.css-przp64-MuiButtonBase-root-MuiButton-root:hover
+{
+  color: var(--main_color);
+}

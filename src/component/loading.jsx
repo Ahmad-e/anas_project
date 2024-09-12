@@ -1,15 +1,9 @@
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
-const Loading = () => {
+
+const Loading = (props) => {
   return (
-    <Container>
-      <Row>
-        <Col>
-           
-          url('data:image/svg+xml,
-          <svg  viewBox="0 0 200 200">
+    <div className={'loading'+(props.loading ? ('') : (' dn'))}>
+          <svg width="111px" viewBox="0 0 200 200">
             <circle
               fill="#D9B056"
               stroke="#D9B056"
@@ -65,10 +59,7 @@ const Loading = () => {
               ></animate>
             </circle>
           </svg>
-          
-        </Col>
-      </Row>
-    </Container>
+    </div>
   );
 };
 export default Loading;

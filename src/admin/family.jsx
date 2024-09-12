@@ -60,22 +60,22 @@ export default function Family() {
             <Table >
               <TableHead >
                 <TableRow>
-                  <TableCell align="start"> Logo </TableCell>
-                  <TableCell align="start"> name </TableCell>
-                  <TableCell align="start"> number </TableCell>
-                  <TableCell align="start"> change data </TableCell>
+                  <TableCell align="center"> اللوغو </TableCell>
+                  <TableCell align="center"> اسم العائلة </TableCell>
+                  <TableCell align="center"> الرقم </TableCell>
+                  <TableCell align="center"> تعديل البيانات </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row) => (
                   <StyledTableRow key={row.name}>
-                    <StyledTableCell align="start">
+                    <StyledTableCell align="center">
                       <img className="table_img" src={Img} />
                     </StyledTableCell>
-                    <StyledTableCell align="start">{row.fat}</StyledTableCell>
-                    <StyledTableCell align="start">{row.carbs}</StyledTableCell>
-                    <StyledTableCell align="start"> 
-                      <Button  variant="outline-primary" >change</Button>
+                    <StyledTableCell align="center">{row.fat}</StyledTableCell>
+                    <StyledTableCell align="center">{row.carbs}</StyledTableCell>
+                    <StyledTableCell align="center"> 
+                      <Button  variant="outline-primary" >تعديل</Button>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
@@ -85,13 +85,16 @@ export default function Family() {
         </Col>
         <Col className="dash_component" lg={4} md={3} sm={12} >
           <div className=" p_t_30 p_10">
-            <label> Add Family logo </label>
+            <label> أضف لوغو خاص بالعائلة </label>
             <input className="dn" accept="image/*"  type="file" id="inputFile1" />
-            <label className="btn-primary btn" for="inputFile1" > Upload image <FileUploadRoundedIcon/> </label>
+            <label className="btn-primary btn" for="inputFile1" > إضافة لوغو <FileUploadRoundedIcon/> </label>
           </div>
           <div className="p_10">
-            <label> Add name of family </label>
-            <TextField  fullWidth id="outlined-basic" label="name" variant="outlined" />
+            <label>  أدخل اسم العائلة </label>
+            <TextField  fullWidth id="outlined-basic" label="الاسم" variant="outlined" />
+          </div>
+          <div>
+            <Button className="m_t_30"> حفظ البيانات </Button>
           </div>
         </Col>
       </Row>
