@@ -29,6 +29,21 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
+
+import { useSelector } from 'react-redux';
+
+import Loading from '../component/loading';
+import axios from "axios";
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -63,6 +78,29 @@ const rows = [
 
 export default function Contributions() {
 
+
+  const acc=useSelector((state) => state.account);
+  const url = useSelector(state=>state.url);
+  const token = useSelector(state=>state.token);
+
+  const [data,setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const [open, setOpen] = React.useState(false);
+  const [idToDelete, setIdToDelete] = React.useState(0);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+  const handleClickOpen = (id) => {
+    setOpen(true);
+    setIdToDelete(id);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
   const [userId, setUserId] = React.useState('');
 
   const handleChangeUserId = (event) => {
@@ -71,6 +109,7 @@ export default function Contributions() {
 
   return (
     <Container>
+      <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
         <Col className="dash_component" lg={8} md={9} sm={12}>
           <TableContainer component={Paper}>

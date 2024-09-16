@@ -19,7 +19,7 @@ import Expensess from './admin/expensess';
 import Family from './admin/family';
 import Users from './admin/users';
 import Zakat from './admin/types';
-
+import Event from './admin/event'
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -63,6 +63,7 @@ function App() {
                 <Route path="family" element={<Family />}  />
                 <Route path="users" element={<Users />}  />
                 <Route path="expensess" element={<Expensess />}  />
+                <Route path="events" element={<Event />}  />
                 <Route path="home" element={<AdminHome />}  />
               </Route>
           </Routes>

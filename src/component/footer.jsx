@@ -12,12 +12,10 @@ import { useLocation } from 'react-router-dom';
 const Footer=()=>{
 
     const location = useLocation();
-  console.log(location.pathname);
-
-  
+    
     const result = location.pathname.substring(0,6);
-    console.log(result);
-    const mode="light"
+    const mode="light";
+    
     return(
         <div className={('footer p_t_50 '+(result==='/admin' ? ('dn') : ('')) )}>
             <div className="container text-center  ">

@@ -1,6 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import * as React from 'react';
 
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
@@ -16,8 +17,28 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 
 
+import { useSelector } from 'react-redux';
+
+import axios from "axios";
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 const Home = () => {
+
+  const acc=useSelector((state) => state.account);
+  const url = useSelector(state=>state.url);
+  const token = useSelector(state=>state.token);
+
+  const [data,setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+
   return (
     <Container>
       <Loading loading={false}/>

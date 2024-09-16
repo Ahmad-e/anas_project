@@ -10,7 +10,7 @@ const modeSlice = createSlice({
         token: Cookies.get("ansToKEn"),
         account: Cookies.get("ansAcC"),
         Language:Cookies.get("ansLanguage2"),
-        url:"http://127.0.0.1:8000/api/"
+        url:"https://api.alsobhi.site/public/api/"
     },
     reducers: {
         toggleMode : (state)=>{
@@ -36,12 +36,6 @@ const modeSlice = createSlice({
             if(value.payload===1)
                 window.location.href = '/admin/home';
             else if(value.payload===2)
-                window.location.href = '/employee/home';
-            else if(value.payload===4)
-                window.location.href = '/delivary/home';
-            else if(value.payload===3)
-                window.location.href = '/profile';
-            else
                 window.location.href = '/';
         }
     }

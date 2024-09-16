@@ -17,8 +17,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
-
 import { useSelector } from 'react-redux';
 
 import Loading from '../component/loading';
@@ -31,6 +29,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+
+
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -64,17 +68,18 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-export default function Family() {
-
+export default function Event() {
   const acc=useSelector((state) => state.account);
   const url = useSelector(state=>state.url);
   const token = useSelector(state=>state.token);
 
   const [data,setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [text,setText] = React.useState('');
+  const [file,setFile] = React.useState(null);
 
-  const [open, setOpen] = React.useState(false);
   const [idToDelete, setIdToDelete] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -87,28 +92,6 @@ export default function Family() {
     setOpen(false);
   };
 
-  React.useEffect(() => {
-    setLoading(true);
-    axios.get(url+"showFamilies",
-      {
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization' : 'Bearer ' +token ,
-            'Accept':"application/json"
-        }
-      })
-        .then((response) => {
-            setData(response.data.families);
-            console.log(response.data)
-            setLoading(false)
-        })
-        .catch((error) =>{ 
-          console.log(error);
-           setLoading(false) });
-}, []);
-
-  const [text,setText] = React.useState('');
-  const [file,setFile] = React.useState(null);
   const handleChangeFile=(e)=>{
     if (e.target.files) {
       setFile(e.target.files[0]);
@@ -117,19 +100,44 @@ export default function Family() {
   const handleChangeText=(event)=>{
     setText(event.target.value);
   }
+  const [date, setDate] = React.useState('');
+  const handleChangeDate = (date) => {
+    setDate(date.$y +"-"+ (date.$M+1) +"-"+date.$D   );
+  };
 
 
-  const addFamily=()=>{
+  React.useEffect(() => {
+    setLoading(true);
+    axios.get(url+"showEvents",
+      {
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' +token ,
+            'Accept':"application/json"
+        }
+      })
+        .then((response) => {
+            setData(response.data.events);
+            console.log(response.data)
+            setLoading(false)
+        })
+        .catch((error) =>{ 
+          console.log(error);
+           setLoading(false) });
+}, []);
+
+  const addAd=()=>{
     
     if(text!=="" && file ){
       console.log(text)
       var form = new FormData();
       form.append('img_url', file);
       form.append('name', text);
+      form.append('date', date);
       setLoading(true)
 
       try {
-        const response = axios.post(url+'addFamily',
+        const response = axios.post(url+'addEvent',
         form,
         {
             headers:{
@@ -140,7 +148,7 @@ export default function Family() {
         }
         ).then((response) => {
             console.log(response.data);
-            setData(response.data.Families);
+            setData(response.data.events);
             setLoading(false)
         }).catch((error) => {
             console.log(error)
@@ -153,13 +161,11 @@ export default function Family() {
 
     }
   }
-
-
-  const deleteFamily=()=>{
+  const deleteAd=()=>{
     console.log(idToDelete)
     
     setLoading(true);
-    axios.get(url+"deleteFamily/"+idToDelete,
+    axios.get(url+"deleteEvent/"+idToDelete,
       {
         headers:{
             'Content-Type': 'application/json',
@@ -168,7 +174,7 @@ export default function Family() {
         }
       })
         .then((response) => {
-            setData(response.data.families);
+            setData(response.data.events);
             console.log(response.data)
             setOpen(false)
             setLoading(false)
@@ -189,10 +195,10 @@ export default function Family() {
             <Table >
               <TableHead >
                 <TableRow>
-                  <TableCell align="center"> اللوغو </TableCell>
-                  <TableCell align="center"> اسم العائلة </TableCell>
-                  <TableCell align="center"> الرقم </TableCell>
-                  <TableCell align="center"> حذف البيانات </TableCell>
+                  <TableCell align="center"> صورة الإعلان </TableCell>
+                  <TableCell align="center"> النص التعريفي </TableCell>
+                  <TableCell align="center"> رقم </TableCell>
+                  <TableCell align="center"> حذف الإعلان </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -206,9 +212,6 @@ export default function Family() {
                     <StyledTableCell align="center"> 
                       <Button onClick={()=>handleClickOpen(row.id)} variant="outline-primary" >حذف</Button>
                     </StyledTableCell>
-                    {/*<StyledTableCell align="center"> 
-                      <Button  variant="outline-primary" >تعديل</Button>
-                    </StyledTableCell>*/}
                   </StyledTableRow>
                 ))}
               </TableBody>
@@ -217,16 +220,24 @@ export default function Family() {
         </Col>
         <Col className="dash_component" lg={4} md={3} sm={12} >
           <div className=" p_t_30 p_10">
-            <label> أضف لوغو خاص بالعائلة </label>
+            <label> أضف صورة للمناسبة </label><br/>
             <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
-            <label className="btn-primary btn" for="inputFile1" > إضافة لوغو <FileUploadRoundedIcon/> </label>
+            <label className="btn-primary btn" for="inputFile1" > رفع صورة <FileUploadRoundedIcon/> </label>
           </div>
           <div className="p_10">
-            <label>  أدخل اسم العائلة </label>
-            <TextField onChange={handleChangeText} fullWidth id="outlined-basic" label="الاسم" variant="outlined" />
+            <label> أضف نص توضيحي فوق الصورة </label>
+            <TextField onChange={handleChangeText} multiline minRows={3} fullWidth id="outlined-basic" label="النص التعريفي" variant="outlined" />
+          </div>
+          <div className="p_10"> 
+            <label> تاريخ المناسبة  </label>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={['DatePicker']}>
+                <DatePicker onChange={handleChangeDate} label="" />
+              </DemoContainer>
+            </LocalizationProvider>
           </div>
           <div>
-            <Button onClick={()=>addFamily()} className="m_t_30"> حفظ البيانات </Button>
+            <Button onClick={()=>addAd()} className="m_t_30"> حفظ البيانات </Button>
           </div>
         </Col>
       </Row>
@@ -241,19 +252,20 @@ export default function Family() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            حذف العائلة يعني حذفها و حذف المستخدمين ضمن العائلة أيضاً
-            هل أنت متأكد من عملية الحذف
+            حذف المناسبة يعني عدم ضهورها للمستخدمين و إزالتها
+            هل أنت متأكن من عملية الحذف
           </DialogContentText>
         </DialogContent>
         <DialogActions style={{ textAlign:"start" }}>
           <Button autoFocus onClick={handleClose}>
             إلغاء
           </Button>
-          <Button onClick={()=>deleteFamily()} autoFocus>
+          <Button onClick={()=>deleteAd()} autoFocus>
             حذف
           </Button>
         </DialogActions>
       </Dialog>
+
     </Container>
     
   );

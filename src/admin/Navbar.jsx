@@ -15,6 +15,9 @@ import ContactMailOutlinedIcon from '@mui/icons-material/ContactMailOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+import WrapTextIcon from '@mui/icons-material/WrapText';
+import CelebrationIcon from '@mui/icons-material/Celebration';
+
 const NavBar=()=>{
 
     const [open,setOpen] = useState(true);
@@ -59,12 +62,20 @@ const NavBar=()=>{
                 <p className={"link_text "+(open ? (''):('dn'))}>المصاريف</p>
             </Nav.Link>
             <Nav.Link className='Admin_link' href="./zakat">
+                <WrapTextIcon/>
+                <p className={"link_text "+(open ? (''):('dn'))}>أنواع المساهمات</p>
+            </Nav.Link>
+            <Nav.Link className='Admin_link' href="./">
                 <CalculateOutlinedIcon/>
-                <p className={"link_text "+(open ? (''):('dn'))}>الزكاة</p>
+                <p className={"link_text "+(open ? (''):('dn'))}> دفعات الزكاة</p>
             </Nav.Link>
             <Nav.Link className='Admin_link' href="./ads">
                 <ViewCarouselIcon />
-                <p className={"link_text "+(open ? (''):('dn'))}>الإعلانات و المناسبات</p>
+                <p className={"link_text "+(open ? (''):('dn'))}>  الإعلانات  </p>
+            </Nav.Link>
+            <Nav.Link className='Admin_link' href="./events">
+                <CelebrationIcon />
+                <p className={"link_text "+(open ? (''):('dn'))}>  المناسبات</p>
             </Nav.Link>
         </div>
     )
