@@ -97,3 +97,12 @@ hr
 {
   color: var(--main_color);
 }
+
+.a_c{
+  text-align: center;
+}
+.carousel-item{
+  transition: -webkit-transform .6s  ease-in-out;
+  transition: transform .6s ease-in-out;
+  transition: transform .6s  ease-in-out,-webkit-transform .6s  ease-in-out;
+} 

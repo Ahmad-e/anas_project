@@ -160,8 +160,44 @@ export default function Types() {
   const changeData=()=>{
 
     if(changedText!==""){
-      console.log(changedText);
+
+      try {
+        const response = axios.post(url+'editDonationType', {
+              id:idToChange,
+              name:changedText
+          },
+          {
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' +token ,
+                'Accept':"application/json"
+            }
+          }).then((response) => {
+            if(response.data.status)
+            { 
+              setOpen(false)    
+              setData(response.data.families)
+                  console.log(response.data);
+                  setLoading(false);
+            }
+            else
+            {
+              console.log(response.data);
+              setLoading(false)
+            }
+
+        }).catch((error) => {
+
+            console.log(error)
+            setLoading(false)
+        });
+            
+    } catch (e) {
+            throw e;
     }
+
+    }
+
   }
 
   return (
@@ -209,14 +245,13 @@ export default function Types() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {"Use Google's location service?"}
+        ادخل اسم جديد لحالة التبرع 
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-                ادخل اسم جديد لحالة التبرع 
-                سيتم تعديل حالات التبرع السابقة بنفس الاسم
-                <div className="p_10">
-                  <label>  أدخل اسم جديد لحالة التبرع </label>
+              
+                <div className="a_c p_10">
+                  <label>   سيتم تعديل حالات التبرع السابقة بنفس الاسم </label>
                   <TextField onChange={handleChangeTextToChange}  fullWidth id="outlined-basic" label="حالة التبرع" variant="outlined" />
                 </div>
           </DialogContentText>

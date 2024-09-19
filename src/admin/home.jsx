@@ -21,13 +21,13 @@ import { useSelector } from 'react-redux';
 
 import axios from "axios";
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+// import Dialog from '@mui/material/Dialog';
+// import DialogActions from '@mui/material/DialogActions';
+// import DialogContent from '@mui/material/DialogContent';
+// import DialogContentText from '@mui/material/DialogContentText';
+// import DialogTitle from '@mui/material/DialogTitle';
+// import useMediaQuery from '@mui/material/useMediaQuery';
+// import { useTheme } from '@mui/material/styles';
 
 const Home = () => {
 
@@ -39,6 +39,44 @@ const Home = () => {
   const [loading, setLoading] = React.useState(false);
 
 
+  const handleChange=(e)=>{
+    console.log(e)
+
+    try {
+      const response = axios.post(url+'getReport', {
+        date1:e[0],
+        date2: e[1]
+        },
+        {
+          headers:{
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' +token ,
+              'Accept':"application/json"
+          }
+        }).then((response) => {
+          if(response.data.status)
+          {     
+            setData(response.data)
+            console.log(response.data);
+            setLoading(false);
+          }
+          else
+          {
+            console.log(response.data);
+            setLoading(false)
+          }
+
+      }).catch((error) => {
+
+          console.log(error)
+          setLoading(false)
+      });
+          
+    } catch (e) {
+            throw e;
+    }
+  }
+
   return (
     <Container>
       <Loading loading={false}/>
@@ -47,7 +85,7 @@ const Home = () => {
           <p>أدخل المدة الزمنية التي تريد تخريج تقرير ضمنها</p>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateRangePicker']}>
-              <DateRangePicker localeText={{ start: 'تاريخ البداية', end: 'تاريخ النهاية' }} />
+              <DateRangePicker onChange={handleChange} localeText={{ start: 'تاريخ البداية', end: 'تاريخ النهاية' }} />
             </DemoContainer>
           </LocalizationProvider>
         </Col>
@@ -56,7 +94,7 @@ const Home = () => {
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div >
             <p> المستخدمين الجدد </p>
-            <h3>5</h3>
+            <h3>{data.users_count}</h3>
           </div>
           <div >
             <ContactMailOutlinedIcon style={{  fontSize:"40px" ,marginTop:"-3px" }}/>
@@ -65,7 +103,7 @@ const Home = () => {
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div>
             <p> المصاريف </p>
-            <h3>21312</h3>
+            <h3> {data.total_expenses} </h3>
           </div>
           <div>
             <CalculateOutlinedIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
@@ -74,7 +112,7 @@ const Home = () => {
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div>
             <p> المساهمات </p>
-            <h3>21312</h3>
+            <h3> {data.total_donations} </h3>
           </div>
           <div>
             <MonetizationOnOutlinedIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
@@ -83,7 +121,7 @@ const Home = () => {
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div>
             <p> الزكاة المدفوعة </p>
-            <h3>21312</h3>
+            <h3> {data.total_zaka} </h3>
           </div>
           <div>
             <PlaylistAddIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
@@ -93,7 +131,7 @@ const Home = () => {
         <Col lg={6} md={8} sm={6} xs={8} className="Admin_info_component">
           <div>
             <p> الزكاة المفروضة و غير المدفوعة </p>
-            <h2 style={{ fontWeight:"bolder" }}>21312</h2>
+            <h2 style={{ fontWeight:"bolder" }}> {data.zaka_on_total_donations} </h2>
           </div>
 
           <div>

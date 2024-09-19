@@ -8,11 +8,20 @@ import Img3 from '../images/3.png';
 import Button from 'react-bootstrap/Button';
 import { useSelector } from 'react-redux';
 import {useState,useEffect} from 'react'
-import SvgHome from '../svgs/home'
+import SvgHome from '../svgs/home';
+import axios from "axios";
+
+
 const Home=()=>{
+    const url = useSelector(state=>state.url);
+    const token = useSelector(state=>state.token);
+
     const mode=useSelector((state) => state.mode);
 
         const [index, setIndex] = useState(0);
+        const [ads, setAds] = useState([]);
+        const [events, setEvents] = useState([]);
+        const [users, setUsers] = useState([]);
       
         const handleSelect = (selectedIndex) => {
           setIndex(selectedIndex);
@@ -36,32 +45,60 @@ const Home=()=>{
         );
     }
 
+
+    useEffect(() => {
+        axios.get(url+"home",
+          {
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' +token ,
+                'Accept':"application/json"
+            }
+          })
+            .then((response) => {
+                setAds(response.data.ads)
+                setEvents(response.data.events)
+                setUsers(response.data.top_users)
+                console.log(response.data)
+            })
+            .catch((error) =>{ 
+              console.log(error);
+            });
+    }, []);
+
     return(
         <>
             <Carousel style={{ zIndex:2 }} >
-                <Carousel.Item interval={4000}>
-                    <img className='carsl_img' src={Img1} text="First slide" />
-                    <Carousel.Caption>
-                        <h3>First slide label</h3>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                    </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item  interval={4000}>
-                    <img  className='carsl_img' src={Img2} text="Second slide" />
-                    <Carousel.Caption>
-                        <h3>Second slide label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item  interval={4000}>
-                        <img  className='carsl_img' src={Img3} text="Third slide" />
-                        <Carousel.Caption>
-                        <h3>Third slide label</h3>
-                        <p>
-                            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                        </p>
-                    </Carousel.Caption>
-                    </Carousel.Item>
+                {
+                    ads.map((item)=>{
+                        return(
+                            <Carousel.Item interval={4000}>
+                                <img className='carsl_img' src={item.img_url} />
+                                <Carousel.Caption>
+                                    
+                                    <p>{ item.name }</p>
+                                </Carousel.Caption>
+                            </Carousel.Item>
+                        )
+                    })
+                }
+
+                {
+                    events.map((item)=>{
+                        return(
+                            <Carousel.Item interval={4000}>
+                                <img className='carsl_img' src={item.img_url}/>
+                                <Carousel.Caption>
+                                <h3>سيتم بتاريخ { item.date }</h3>
+                                    <p>{ item.name }</p>
+                                </Carousel.Caption>
+                            </Carousel.Item>
+                        )
+                    })
+                }
+                
+
+
                 </Carousel>
                 
             <Container >
@@ -88,15 +125,15 @@ const Home=()=>{
                             الأعضاء الأكثر  مساهمة 
                         </h3>
                     </Col>
-                    <Col className='m_t_50' lg={4} sm={6} xs={12}>
-                        <Card  image={"https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"} name={"Ahmad"} email={"homseahmad07@gmail.com"} />
-                    </Col>
-                    <Col className='m_t_50' lg={4} sm={6} xs={12}>
-                        <Card image={"https://preview.keenthemes.com/metronic-v4/theme_rtl/assets/pages/media/profile/profile_user.jpg"} name={"Anas"} email={"Anas@gmail.com"} />
-                    </Col>
-                    <Col className='m_t_50' lg={4} sm={6} xs={12}>
-                        <Card image={"https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"} name={"Ali"} email={"Ali@gmail.com"} />
-                    </Col>
+                    {users.map((item)=>{
+                        return(
+                            <Col className='m_t_50' lg={4} sm={6} xs={12}>
+                                <Card image={item.user[0].img_url} name={item.user[0].name} email={item.user[0].email} />
+                            </Col>
+                        )
+                    })}
+
+
                 </Row>
             </Container>
         </>

@@ -18,8 +18,10 @@ import Contributions from './admin/contributions';
 import Expensess from './admin/expensess';
 import Family from './admin/family';
 import Users from './admin/users';
-import Zakat from './admin/types';
-import Event from './admin/event'
+import Types from './admin/types';
+import Event from './admin/event';
+import Zakat from './admin/zakat';
+import Err from './svgs/err404'
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -55,15 +57,17 @@ function App() {
               <Route index element={<Home />} />
               <Route path="register" element={<Register />} />
               <Route path="login" element={<Login />} />
+              <Route path="*" element={<Err />} />
 
               <Route path="admin" element={<AdminApp />} >
-                <Route path="zakat" element={<Zakat />}  />
+                <Route path="types" element={<Types />}  />
                 <Route path="contributions" element={<Contributions />}  />
                 <Route path="ads" element={<Ads />}  />
                 <Route path="family" element={<Family />}  />
                 <Route path="users" element={<Users />}  />
                 <Route path="expensess" element={<Expensess />}  />
                 <Route path="events" element={<Event />}  />
+                <Route path="zakat" element={<Zakat />}  />
                 <Route path="home" element={<AdminHome />}  />
               </Route>
           </Routes>

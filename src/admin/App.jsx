@@ -1,8 +1,18 @@
 import {Outlet } from 'react-router-dom';
 import NavBar from './Navbar'
+import Err from '../svgs/err404'
+import { useSelector } from 'react-redux';
 
 
 const Home=()=>{
+    const acc=useSelector((state) => state.account);
+    if(acc!=="1")
+        return(
+            <>
+                <Err />
+                
+            </>
+        )
 
     return(
         <div className='full_container'>

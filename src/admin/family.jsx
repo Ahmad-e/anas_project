@@ -74,6 +74,7 @@ export default function Family() {
   const [loading, setLoading] = React.useState(false);
 
   const [open, setOpen] = React.useState(false);
+  const [openChangeDialog, setOpenChangeDialog] = React.useState(false);
   const [idToDelete, setIdToDelete] = React.useState(0);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -82,9 +83,32 @@ export default function Family() {
     setOpen(true);
     setIdToDelete(id);
   };
-
   const handleClose = () => {
     setOpen(false);
+  };
+
+
+  const [textToChange,setTextToChange] = React.useState('');
+  const [fileToChange,setFileToChange] = React.useState(null);
+  const [idToChange,setIdToChange] = React.useState(0);
+
+  const handleChangeFileToChange=(e)=>{
+    console.log(e.target.files[0])
+    if (e.target.files) {
+      setFileToChange(e.target.files[0]);
+      
+    }
+  }
+  const handleChangeTextToChange=(event)=>{
+    setTextToChange(event.target.value);
+  }
+  const handleClickOpenChangeDialog = (fam) => {
+    setOpenChangeDialog(true);
+    setTextToChange(fam.name);
+    setIdToChange(fam.id)
+  };
+  const handleCloseChangeDialog = () => {
+    setOpenChangeDialog(false);
   };
 
   React.useEffect(() => {
@@ -179,6 +203,43 @@ export default function Family() {
             setLoading(false)
          });
   }
+  const changeFamily=()=>{
+    
+    if(textToChange!=="" ){
+      console.log(text)
+      var form = new FormData();
+      if(fileToChange!==null)
+        form.append('img_url', fileToChange);
+      form.append('name', textToChange);
+      form.append('id', idToChange);
+      setLoading(true)
+
+      try {
+        const response = axios.post(url+'editFamily',
+        form,
+        {
+            headers:{
+                'Content-Type': 'multipart/form-data',
+                'Authorization' : 'Bearer ' +token ,
+                'Accept':"application/json"
+            }
+        }
+        ).then((response) => {
+            console.log(response.data);
+            setData(response.data.families);
+            setLoading(false)
+            handleCloseChangeDialog(false)
+        }).catch((error) => {
+            console.log(error)
+            setLoading(false)
+        });
+      } catch (e) {
+          throw e;
+      }
+
+
+    }
+  }
 
   return (
     <Container>
@@ -193,6 +254,7 @@ export default function Family() {
                   <TableCell align="center"> اسم العائلة </TableCell>
                   <TableCell align="center"> الرقم </TableCell>
                   <TableCell align="center"> حذف البيانات </TableCell>
+                  <TableCell align="center"> تعديل البيانات </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -206,9 +268,9 @@ export default function Family() {
                     <StyledTableCell align="center"> 
                       <Button onClick={()=>handleClickOpen(row.id)} variant="outline-primary" >حذف</Button>
                     </StyledTableCell>
-                    {/*<StyledTableCell align="center"> 
-                      <Button  variant="outline-primary" >تعديل</Button>
-                    </StyledTableCell>*/}
+                    <StyledTableCell align="center"> 
+                      <Button onClick={()=>handleClickOpenChangeDialog(row)} variant="outline-primary" >تعديل</Button>
+                    </StyledTableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>
@@ -217,7 +279,7 @@ export default function Family() {
         </Col>
         <Col className="dash_component" lg={4} md={3} sm={12} >
           <div className=" p_t_30 p_10">
-            <label> أضف لوغو خاص بالعائلة </label>
+            <label> أضف لوغو خاص بالعائلة </label><br/>
             <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
             <label className="btn-primary btn" for="inputFile1" > إضافة لوغو <FileUploadRoundedIcon/> </label>
           </div>
@@ -237,11 +299,11 @@ export default function Family() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {"Use Google's location service?"}
+          
+        حذف العائلة يعني حذفها و حذف المستخدمين ضمن العائلة أيضاً
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            حذف العائلة يعني حذفها و حذف المستخدمين ضمن العائلة أيضاً
             هل أنت متأكد من عملية الحذف
           </DialogContentText>
         </DialogContent>
@@ -254,6 +316,43 @@ export default function Family() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* change dialog */}
+
+      <Dialog
+        fullScreen={fullScreen}
+        open={openChangeDialog}
+        onClose={handleCloseChangeDialog}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+        تعديل الاسم أو صورة العائلة
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            
+            <div className="a_c p_t_30 p_10">
+              <label> أضف لوغو جديد خاص بالعائلة </label><br/>
+              <input onChange={handleChangeFileToChange} className="dn" accept="image/*"  type="file" id="inputFile1_" />
+              <label className="btn-primary btn" for="inputFile1_" > إضافة لوغو <FileUploadRoundedIcon/> </label>
+            </div>
+            <div className="a_c p_10">
+              <label>  أدخل اسم العائلة </label>
+              <TextField defaultValue={textToChange} onChange={handleChangeTextToChange} fullWidth id="outlined-basic" label="الاسم" variant="outlined" />
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions style={{ textAlign:"start" }}>
+          <Button autoFocus onClick={handleCloseChangeDialog}>
+            إلغاء
+          </Button>
+          <Button onClick={()=>changeFamily()} autoFocus>
+            حفظ التعديلات
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
     </Container>
     
   );

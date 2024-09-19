@@ -20,14 +20,12 @@ import CelebrationIcon from '@mui/icons-material/Celebration';
 
 const NavBar=()=>{
 
-    const [open,setOpen] = useState(true);
+    const [open,setOpen] = useState(false);
     const tuggleOppen=()=>{
         if(open)
             setOpen(false);
         else
             setOpen(true);
-
-            console.log(open)
     }
 
     return(
@@ -61,11 +59,11 @@ const NavBar=()=>{
                 <MonetizationOnOutlinedIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}>المصاريف</p>
             </Nav.Link>
-            <Nav.Link className='Admin_link' href="./zakat">
+            <Nav.Link className='Admin_link' href="./types">
                 <WrapTextIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}>أنواع المساهمات</p>
             </Nav.Link>
-            <Nav.Link className='Admin_link' href="./">
+            <Nav.Link className='Admin_link' href="./zakat">
                 <CalculateOutlinedIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}> دفعات الزكاة</p>
             </Nav.Link>

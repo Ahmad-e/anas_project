@@ -13,26 +13,52 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
+import Alert from '@mui/material/Alert';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Loading from '../component/loading';
+import axios from "axios";
+import {modeActions} from "../Store"
+import { useLocation } from 'react-router-dom';
+import { FormatListBulletedSharp } from '@mui/icons-material';
+
 
 const Register=()=>{
 
+    const location = useLocation();
+    
+    const result = location.pathname.substring(0,6);
+
+    const {setToken,setAcc} = modeActions;
+    const dispatch = useDispatch();
+    const url = useSelector(state=>state.url);
+    const [loading, setLoading] = React.useState(false);
 
     const [email,setEmail]=React.useState('');
     const [name,setName]=React.useState('');
     const [password,setPassword]=React.useState('');
+    const [file,setFile] = React.useState(null);
+    const handleChangeFile=(e)=>{
+        console.log(e.target.files[0])
+        if (e.target.files) {
+          setFile(e.target.files[0]);
+        }
+      }
 
-    const [erremail,setErrEmail]=React.useState('');
+    const [erremail,setErrEmail]=React.useState(false);
     const [errName,setErrName]=React.useState(false);
     const [errPassword,setErrPassword]=React.useState(false);
+    const [errServer,setErrServer]=React.useState('');
 
 
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     const handleChangeEmail=(event)=>{
         setEmail(event.target.value)
-        if(re.test(email))
-            setErrEmail(true);
+        if( re.test(email) )
+            setErrEmail(false);
         else
-            setErrEmail(false)
+            setErrEmail(true)
     }
 
     const handleChangepassword=(event)=>{
@@ -63,15 +89,73 @@ const Register=()=>{
       event.preventDefault();
     };
 
+    const send_data=()=>{
+        var r=(Math.floor(Math.random() * (100 - 10000 + 1)) + 10000)
+        if(password==="")
+            setErrPassword(true)
+        if(name==="")
+            setErrName(true)
+        if(erremail==="")
+            setErrEmail(true)
+
+        
+        if(!errName && !errPassword && !erremail )
+            if(password!=="" && name!=="" && email!==""){
+                var form = new FormData();
+                if(file!==null)
+                    form.append('img_url', file);
+                form.append('name', name);
+                form.append('password', password);
+                form.append('phone_no', r);
+                form.append('email', email);
+                form.append('type_id', 2);
+
+                setLoading(true)
+
+                try {
+                    const response = axios.post(url+'register',
+                    form,
+                    {
+                        headers:{
+                            'Content-Type': 'multipart/form-data',
+                            'Accept':"application/json"
+                        }
+                    }
+                    ).then((response) => {
+                        console.log("yes",response.data);
+                        if(response.data.status===true)
+                        {
+                            setErrServer('')
+                            if(result!=='/admin'){
+                                dispatch(setToken(response.data.access_token));
+                                dispatch(setAcc(response.data.user_data.type_id));
+                            }
+                        }
+                        if(response.data.status===false){
+                            setErrServer(response.data.message)
+                        }
+
+                        setLoading(false)
+                    }).catch((error) => {
+                        console.log("No",error)
+                        setErrServer("حصلت مشكلة في السيرفر حاول مجدداً")
+                        setLoading(false)
+                    });
+                } catch (e) {
+                    throw e;
+                }
+            }
+    }
+
     return(
         <Container>
             <Row className='justify-content-center' >
-                
+                <Loading loading={loading}/>
                 <div className="auth_box m_t_50" >
                 <h4>إنشاء حساب جديد</h4>
                 <div className=" p_t_30 p_10">
                     <label> أضف صورة</label> <br/> 
-                    <input className="dn" accept="image/*"  type="file" id="inputFile1" />
+                    <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
                     <label className="btn-primary btn" for="inputFile1" > أرفع صورتك الشخصية <FileUploadRoundedIcon/> </label>
                 </div>
                     <TextField
@@ -127,9 +211,10 @@ const Register=()=>{
                     </FormControl>
                     <br/>
                     <br/>
+                    
+                    <Alert  variant="outlined" hidden={errServer===""} severity="error">{errServer}</Alert>
                     <br/>
-
-                    <Button className='auth_button' variant="primary">تسجيل حساب</Button>
+                    <Button onClick={()=>send_data()} className='auth_button' variant="primary">تسجيل حساب</Button>
 
                 </div>
             </Row>

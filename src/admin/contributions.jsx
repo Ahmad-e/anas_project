@@ -102,7 +102,6 @@ export default function Contributions() {
             setData(response.data.donations);
             setUsers(response.data.users);
             setTypes(response.data.types);
-            console.log(response.data)
             setLoading(false)
         })
         .catch((error) =>{ 
@@ -122,10 +121,30 @@ export default function Contributions() {
   };
 
   const [idToChange, setIdToChange] = React.useState(0);
+  const [dateToChange, setDateToChange] = React.useState(null);
+  const handleChangeDateToChange = (date) => {
+    setDateToChange(date.$y +"-"+ (date.$M+1) +"-"+date.$D   );
+  };
+  const [typeidToChange, setTypeIdToChange] = React.useState(null);
+  const handleChangeTypeIdToChange = (event) => {
+    setTypeIdToChange(event.target.value);
+  };
+  const [useridToChange, setUserIdToChange] = React.useState(null);
+  const handleChangeUserIdToChange = (event) => {
+    setUserIdToChange(event.target.value);
+  };
+  const [monyToChange, setMonyToChange] = React.useState(null);
+  const handleChangeMonyToChange = (event) => {
+    setMonyToChange(event.target.value);
+  };
   const [openCangeDialog, setOpenCangeDialog] = React.useState(false);
   const handleClickOpenChangeDialog = (don) => {
     setOpenCangeDialog(true);
     setIdToChange(don.id);
+    setDateToChange(don.date);
+    setMonyToChange(don.amount);
+    setUserIdToChange(don.user_id);
+    setTypeIdToChange(don.donation_type_id);
   };
   const handleCloseChangeDialog = () => {
     setOpenCangeDialog(false);
@@ -151,7 +170,6 @@ export default function Contributions() {
 
 
   const addData=()=>{
-    console.log(date)
     
     if(date!=='' && userId!==0 && typeId!==0 & mony!==0)
     {
@@ -220,8 +238,45 @@ export default function Contributions() {
          });
   }
   
-  const changeData=(don)=>{
+  const changeData=()=>{
+    setLoading(true)
+      try {
+        const response = axios.post(url+'editDonation', {
+          id:idToChange,
+          user_id:useridToChange,
+          donation_type_id: typeidToChange,
+          amount: monyToChange,
+          date: dateToChange,
+          },
+          {
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' +token ,
+                'Accept':"application/json"
+            }
+          }).then((response) => {
+            if(response.data.status)
+            {     
+              setData(response.data.donations)
+              console.log(response.data);
+              setLoading(false);
+              setOpenCangeDialog(false)
+            }
+            else
+            {
+              console.log(response.data);
+              setLoading(false)
+            }
 
+        }).catch((error) => {
+
+            console.log(error)
+            setLoading(false)
+        });
+            
+      } catch (e) {
+              throw e;
+      }
   }
   
 
@@ -327,11 +382,10 @@ export default function Contributions() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {"Use Google's location service?"}
+                حذف المساهمة لعدم احتسابها وإزالتها من النظام
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-                حذف المساهمة لعدم احتسابها وإزالتها من النظام
                 
           </DialogContentText>
         </DialogContent>
@@ -353,12 +407,63 @@ export default function Contributions() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {"Use Google's location service?"}
+        ادخل البيانات الجديدة و أحفظ التعديلات 
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-                ادخل البيانات الجديدة و أحفظ التعديلات 
+            
+            <div className="a_c p_t_30 p_10">
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">اسم المساهم</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={useridToChange}
+                  label="user name"
+                  onChange={handleChangeUserIdToChange}
+                >
+                  {
+                    users.map((item)=>{
+                      return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                    })
+                  }
+                </Select>
+              </FormControl>
                 
+
+            </div>
+            <div className="a_c p_10">
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">نوعية المساهمة</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={typeidToChange}
+                  label="نوعية المساهمة"
+                  onChange={handleChangeTypeIdToChange}
+                >
+                  {
+                    types.map((item)=>{
+                      return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                    })
+                  }
+                </Select>
+              </FormControl>
+                
+
+            </div>
+            <div className="a_c p_10">
+              <TextField defaultValue={monyToChange} onChange={handleChangeMonyToChange} type="number"  fullWidth id="outlined-basic" label="المبلغ" variant="outlined" />
+            </div>
+            <div className="a_c p_10"> 
+              <label> تاريخ أداء المساهمة </label>
+              <label>التاريخ مهم لحساب الزكاة</label>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <DatePicker  onChange={handleChangeDateToChange} label="" />
+                </DemoContainer>
+              </LocalizationProvider>
+            </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions style={{ textAlign:"start" }}>
