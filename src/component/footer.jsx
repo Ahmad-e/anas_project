@@ -36,6 +36,9 @@ const Footer=()=>{
                     <div style={{ color:"black" }} class=" legal mt-2">
                         <p> جميع الحقوق محفوظة  &copy; 2024</p>
                     </div>
+                    <div style={{ color:"black" }} class=" legal mt-2">
+                        <p> Developed by <a href="mailto:homseahmad07@gmail.com"> Eng.Ahmad homse </a>  </p>
+                    </div>
                     <br/>
                 </div>
             </div>

@@ -15,19 +15,13 @@ import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlin
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
-
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 
 import { useSelector } from 'react-redux';
-
+import { useState } from 'react';
 import axios from "axios";
 
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-// import useMediaQuery from '@mui/material/useMediaQuery';
-// import { useTheme } from '@mui/material/styles';
 
 const Home = () => {
 
@@ -40,13 +34,13 @@ const Home = () => {
 
 
   const handleChange=(e)=>{
-    console.log(e)
-
+    var body={
+      date1:(e[0].$y +"-"+ (e[0].$M+1) +"-"+(e[0].$D+1)),
+      date2:( e[1].$y +"-"+ (e[1].$M+1) +"-"+(e[1].$D+1))
+      }
+    console.log(body)
     try {
-      const response = axios.post(url+'getReport', {
-        date1:e[0],
-        date2: e[1]
-        },
+      const response = axios.post(url+'getReport', body,
         {
           headers:{
               'Content-Type': 'application/json',
@@ -77,18 +71,72 @@ const Home = () => {
     }
   }
 
+  const [checked, setChecked] = useState(false);
+  const handleChangeCheckbox=(e)=>{
+    setChecked(e.currentTarget.checked)
+    if(e.currentTarget.checked)
+    try {
+      const response = axios.post(url+'getReport', {
+        date1: "2000-9-01",
+        date2: "2100-9-01"
+        },
+        {
+          headers:{
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' +token ,
+              'Accept':"application/json"
+          }
+        }).then((response) => {
+          if(response.data.status)
+          {     
+            setData(response.data)
+            console.log(response.data);
+            setLoading(false);
+          }
+          else
+          {
+            console.log(response.data);
+            setLoading(false)
+          }
+
+      }).catch((error) => {
+
+          console.log(error)
+          setLoading(false)
+      });
+          
+    } catch (e) {
+            throw e;
+    }
+  }
+  
   return (
     <Container>
       <Loading loading={false}/>
+      
       <Row className=' justify-content-center'>
-        <Col className="p_t_50" lg={12} md={12} >
-          <p>أدخل المدة الزمنية التي تريد تخريج تقرير ضمنها</p>
+        <Col className="p_t_50 m_t_50" lg={3} md={5} sm={12}>
+          <ToggleButton
+              className="mb-2"
+              id="toggle-check"
+              type="checkbox"
+              variant={checked ? "primary" : "outline-primary"}
+              checked={checked}
+              value="1"
+              onChange={(e) => handleChangeCheckbox(e)}
+            >
+            عرض كل البيانات
+          </ToggleButton>
+        </Col>
+        <Col  lg={9} md={7} sm={12} className="p_t_50">
+        <p>أدخل المدة الزمنية التي تريد تخريج تقرير ضمنها</p>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateRangePicker']}>
               <DateRangePicker onChange={handleChange} localeText={{ start: 'تاريخ البداية', end: 'تاريخ النهاية' }} />
             </DemoContainer>
           </LocalizationProvider>
         </Col>
+
       </Row>
       <Row className='fullWidth m_t_50 justify-content-center'>
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
@@ -112,7 +160,7 @@ const Home = () => {
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div>
             <p> المساهمات </p>
-            <h3> {data.total_donations} </h3>
+            <h3> {data.total_donations_now} </h3>
           </div>
           <div>
             <MonetizationOnOutlinedIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
@@ -122,6 +170,34 @@ const Home = () => {
           <div>
             <p> الزكاة المدفوعة </p>
             <h3> {data.total_zaka} </h3>
+          </div>
+          <div>
+            <PlaylistAddIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
+          </div>
+
+        </Col>
+        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+          <div>
+            <p> المحفظة الحالية </p>
+            <h3> {data.total_donations_now - data.total_expenses} </h3>
+          </div>
+          <div>
+            <AccountBalanceWalletIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
+          </div>
+        </Col>
+        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+          <div>
+            <p> المساهمات المدفوعة من سنة </p>
+            <h3> {data.total_donations} </h3>
+          </div>
+          <div>
+            <MonetizationOnOutlinedIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
+          </div>
+        </Col>
+        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+          <div>
+            <p> الزكاة المدفوعة من سنة </p>
+            <h3> {data.total_zaka_old} </h3>
           </div>
           <div>
             <PlaylistAddIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>

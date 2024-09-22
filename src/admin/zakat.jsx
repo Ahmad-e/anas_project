@@ -286,12 +286,30 @@ export default function Contributions() {
       }
   }
   
+  const [filterUsUser,setFilterUsUser] = React.useState(0);
 
   return (
     <Container>
       <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
         <Col className="dash_component" lg={8} md={9} sm={12}>
+              <FormControl style={{ padding : "10px", width:"220px"  }}  fullWidth>
+                <InputLabel id="demo-simple-select-label"> عرض المساهمين باسم </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={filterUsUser}
+                  label=" عرض المساهمين باسم "
+                  onChange={(e)=>setFilterUsUser(e.target.value)}
+                >
+                  <MenuItem value={0}> الجميع </MenuItem>
+                  {
+                    users.map((item)=>{
+                      return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                    })
+                  }
+                </Select>
+              </FormControl>
           <TableContainer component={Paper}>
             <Table >
               <TableHead >
@@ -303,20 +321,20 @@ export default function Contributions() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((row) => (
+                {data.map((row) => {
+                  if(row.user_id===filterUsUser || filterUsUser===0 )
+                  return(
                   <StyledTableRow key={row.name}>
                     <StyledTableCell align="center">{row.date}</StyledTableCell>
                     <StyledTableCell align="center">{row.name}</StyledTableCell>
                     
                     <StyledTableCell align="center">{row.amount}</StyledTableCell>
-                    {/* <StyledTableCell align="center"> 
-                      <Button onClick={()=>handleClickOpenChangeDialog(row)} variant="outline-primary" >تعديل</Button>
-                    </StyledTableCell> */}
+
                     <StyledTableCell align="center"> 
                       <Button onClick={()=>handleClickOpenDeleteDialog(row.id)} variant="outline-primary" >حذف</Button>
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
+                )})}
               </TableBody>
             </Table>
           </TableContainer>

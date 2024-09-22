@@ -42,6 +42,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { Padding } from "@mui/icons-material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -102,6 +103,7 @@ export default function Contributions() {
             setData(response.data.donations);
             setUsers(response.data.users);
             setTypes(response.data.types);
+            console.log(response.data)
             setLoading(false)
         })
         .catch((error) =>{ 
@@ -280,11 +282,52 @@ export default function Contributions() {
   }
   
 
+  const [filterUsUser,setFilterUsUser] = React.useState(0);
+  const [filterUsType,setFilterUsType] = React.useState(0);
+
   return (
     <Container>
       <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
-        <Col className="dash_component" lg={8} md={9} sm={12}>
+        <Col className=" p_t_30 dash_component" lg={8} md={9} sm={12}>
+
+          <div className="filter">
+              <FormControl style={{ padding : "10px" }}  fullWidth>
+                <InputLabel id="demo-simple-select-label"> عرض المساهمين باسم </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={filterUsUser}
+                  label=" عرض المساهمين باسم "
+                  onChange={(e)=>setFilterUsUser(e.target.value)}
+                >
+                  <MenuItem value={0}> جميع المساهمين </MenuItem>
+                  {
+                    users.map((item)=>{
+                      return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                    })
+                  }
+                </Select>
+              </FormControl>
+              <FormControl style={{ padding : "10px" }} fullWidth>
+                <InputLabel id="demo-simple-select-label"> عرض أنواع المساهمات حسب </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={filterUsType}
+                  label=" عرض أنواع المساهمات حسب "
+                  onChange={(e)=>setFilterUsType(e.target.value)}
+                >
+                  <MenuItem value={0}> جميع المساهمات </MenuItem>
+                  {
+                    types.map((item)=>{
+                      return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                    })
+                  }
+                </Select>
+              </FormControl>
+          </div>
+
           <TableContainer component={Paper}>
             <Table >
               <TableHead >
@@ -298,25 +341,30 @@ export default function Contributions() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((row) => (
-                  <StyledTableRow key={row.name}>
-                    <StyledTableCell align="center">{row.date}</StyledTableCell>
-                    <StyledTableCell align="center">{row.user_name}</StyledTableCell>
-                    <StyledTableCell align="center">{row.type}</StyledTableCell>
-                    <StyledTableCell align="center">{row.amount}</StyledTableCell>
-                    <StyledTableCell align="center"> 
-                      <Button onClick={()=>handleClickOpenChangeDialog(row)} variant="outline-primary" >تعديل</Button>
-                    </StyledTableCell>
-                    <StyledTableCell align="center"> 
-                      <Button onClick={()=>handleClickOpenDeleteDialog(row.id)} variant="outline-primary" >حذف</Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+                {data.map((row) => {
+                  
+                  if(row.user_id===filterUsUser || filterUsUser===0 )
+                    if(row.donation_type_id===filterUsType|| filterUsType===0 )
+                      return(
+                        <StyledTableRow key={row.name}>
+                          <StyledTableCell align="center">{row.date}</StyledTableCell>
+                          <StyledTableCell align="center">{row.user_name}</StyledTableCell>
+                          <StyledTableCell align="center">{row.type}</StyledTableCell>
+                          <StyledTableCell align="center">{row.amount}</StyledTableCell>
+                          <StyledTableCell align="center"> 
+                            <Button onClick={()=>handleClickOpenChangeDialog(row)} variant="outline-primary" >تعديل</Button>
+                          </StyledTableCell>
+                          <StyledTableCell align="center"> 
+                            <Button onClick={()=>handleClickOpenDeleteDialog(row.id)} variant="outline-primary" >حذف</Button>
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      )
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
         </Col>
-        <Col className="dash_component" style={{ alignItems:"start" }} lg={4} md={3} sm={10} xs={12} >
+        <Col className="dash_component p_t_30" style={{ alignItems:"start" }} lg={4} md={3} sm={10} xs={12} >
           <div className=" p_t_30 p_10">
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">اسم المساهم</InputLabel>

@@ -33,6 +33,19 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Alert from '@mui/material/Alert';
+
+
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -53,34 +66,86 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 export default function Users() {
 
-  const Register=()=>{
-    return(
-      <Register_test/>
-    )
+    
+  const url = useSelector(state=>state.url);
+  const [loading, setLoading] = React.useState(false);
+
+  const [email,setEmail]=React.useState('');
+  const [name,setName]=React.useState('');
+  const [password,setPassword]=React.useState('');
+  const [family_id,setFamily_id]=React.useState(0);
+  const [families,setFamilies]=React.useState([]);
+
+
+  const [file,setFile] = React.useState(null);
+  const handleChangeFile=(e)=>{
+      console.log(e.target.files[0])
+      if (e.target.files) {
+        setFile(e.target.files[0]);
+      }
+    }
+
+  const [erremail,setErrEmail]=React.useState(false);
+  const [errName,setErrName]=React.useState(false);
+  const [errPassword,setErrPassword]=React.useState(false);
+  const [errFamilyId,setErrFamilyId]=React.useState(false);
+  const [errServer,setErrServer]=React.useState('');
+
+
+  let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const handleChangeEmail=(event)=>{
+      setEmail(event.target.value)
+      if( re.test(email) )
+          setErrEmail(false);
+      else
+          setErrEmail(true)
   }
 
-  const url = useSelector(state=>state.url);
+  const handleChangepassword=(event)=>{
+      setPassword(event.target.value)
+      if(event.target.value.length<8)
+          setErrPassword(true);
+      else
+          setErrPassword(false)
+  }
+
+  const handleChangeName=(event)=>{
+      setName(event.target.value)
+      if(event.target.value.length<2)
+          setErrName(true);
+      else
+          setErrName(false)
+  }
+
+  const handleChangeFamily=(event)=>{
+      setFamily_id(event.target.value)
+      setErrFamilyId(false)
+  }
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
+  };
+
+
   const token = useSelector(state=>state.token);
   const [data,setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
 
 
   const [open, setOpen] = React.useState(false);
+  const [openChange, setOpenChange] = React.useState(false);
   const [idToDelete, setIdToDelete] = React.useState(0);
+  const [idToChange, setIdToChange] = React.useState(0);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -91,7 +156,16 @@ export default function Users() {
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleClickOpenChange = (user) => {
+    setOpenChange(true);
+    setIdToChange(user.id);
+    setEmailToChange(user.email);
+    setNameToChange(user.name);
+    setFamily_idToChange(user.family_id)
+  };
+  const handleCloseChange = () => {
+    setOpenChange(false);
+  };
 
   React.useEffect(() => {
     setLoading(true);
@@ -105,6 +179,7 @@ export default function Users() {
       })
         .then((response) => {
             setData(response.data.users);
+            setFamilies(response.data.families);
             console.log(response.data)
             setLoading(false)
         })
@@ -112,6 +187,64 @@ export default function Users() {
           console.log(error);
            setLoading(false) });
 }, []);
+
+
+
+const send_data=()=>{
+  var r=(Math.floor(Math.random() * (100 - 10000 + 1)) + 10000)
+  if(password==="")
+      setErrPassword(true)
+  if(name==="")
+      setErrName(true)
+  if(email==="")
+      setErrEmail(true)
+  if(family_id===0)
+      setErrFamilyId(true)
+
+  
+  if(!errName && !errPassword && !erremail && family_id!==0 )
+      if(password!=="" && name!=="" && email!==""){
+          var form = new FormData();
+          if(file!==null)
+              form.append('img_url', file);
+          form.append('family_id', family_id);
+          form.append('name', name);
+          form.append('password', password);
+          form.append('phone_no', r);
+          form.append('email', email);
+          form.append('type_id', 2);
+
+          setLoading(true)
+
+          try {
+              const response = axios.post(url+'register',
+              form,
+              {
+                  headers:{
+                      'Content-Type': 'multipart/form-data',
+                      'Accept':"application/json"
+                  }
+              }
+              ).then((response) => {
+                  if(response.data.status===true)
+                  {
+                      setErrServer('')
+                  }
+                  if(response.data.status===false){
+                      setErrServer(response.data.message)
+                  }
+
+                  setLoading(false)
+              }).catch((error) => {
+                  console.log("No",error)
+                  setErrServer("حصلت مشكلة في السيرفر حاول مجدداً")
+                  setLoading(false)
+              });
+          } catch (e) {
+              throw e;
+          }
+      }
+}
 
   const deleteAcc=()=>{
     setLoading(true);
@@ -136,11 +269,124 @@ export default function Users() {
          });
   }
 
+
+
+  const [emailToChange,setEmailToChange]=React.useState('');
+  const [nameToChange,setNameToChange]=React.useState('');
+  const [passwordToChange,setPasswordToChange]=React.useState('');
+  const [family_idToChange,setFamily_idToChange]=React.useState(0);
+  const [familiesToChange,setFamiliesToChange]=React.useState([]);
+
+
+  const [fileToChange,setFileToChange] = React.useState(null);
+  const handleChangeFileToChange=(e)=>{
+      console.log(e.target.files[0])
+      if (e.target.files) {
+        setFileToChange(e.target.files[0]);
+      }
+    }
+
+  const [erremailToChange,setErrEmailToChange]=React.useState(false);
+  const [errNameToChange,setErrNameToChange]=React.useState(false);
+  const [errPasswordToChange,setErrPasswordToChange]=React.useState(false);
+  const [errFamilyIdToChange,setErrFamilyIdToChange]=React.useState(false);
+  const [errServerToChange,setErrServerToChange]=React.useState('');
+
+  const handleChangeEmailToChange=(event)=>{
+      setEmailToChange(event.target.value)
+      if( re.test(emailToChange) )
+          setErrEmailToChange(false);
+      else
+          setErrEmailToChange(true)
+  }
+
+  const handleChangepasswordToChange=(event)=>{
+      setPasswordToChange(event.target.value)
+      if(event.target.value.length<8)
+          setErrPasswordToChange(true);
+      else
+          setErrPasswordToChange(false)
+  }
+
+  const handleChangeNameToChange=(event)=>{
+      setNameToChange(event.target.value)
+      if(event.target.value.length<2)
+          setErrNameToChange(true);
+      else
+          setErrNameToChange(false)
+  }
+
+  const handleChangeFamilyToChange=(event)=>{
+      setFamily_idToChange(event.target.value)
+      setErrFamilyIdToChange(false)
+  }
+  const changeAcc=()=>{
+    if(passwordToChange==="")
+        setErrPasswordToChange(true)
+    if(nameToChange==="")
+        setErrNameToChange(true)
+    if(emailToChange==="")
+        setErrEmailToChange(true)
+    if(family_idToChange===0)
+        setErrFamilyIdToChange(true)
+  
+    
+    if(!errNameToChange  && !erremailToChange && family_idToChange!==0 )
+        if(nameToChange!=="" && emailToChange!==""){
+
+          console.log(nameToChange,emailToChange)
+          var form = new FormData();
+          
+          form.append('id', idToChange);
+          if(fileToChange!==null)
+              form.append('img_url', fileToChange);
+          form.append('family_id', family_idToChange);
+          form.append('name', nameToChange);
+          form.append('email', emailToChange);
+          
+          setLoading(true)
+
+          try {
+              const response = axios.post(url+'editAcc',
+              form,
+              {
+                  headers:{
+                      'Content-Type': 'multipart/form-data',
+                      
+                      'Authorization' : 'Bearer ' +token ,
+                      'Accept':"application/json"
+                  }
+              }
+              ).then((response) => {
+                console.log(response.data)
+                  if(response.data.status===true)
+                  {
+                      setErrServer('')
+                      setData(response.data.users)
+                      console.log(response.data)
+                      setOpenChange(false);
+                  }
+                  if(response.data.status===false){
+                      setErrServer(response.data.message)
+                  }
+
+                  setLoading(false)
+              }).catch((error) => {
+                  console.log("No",error)
+                  setErrServer("حصلت مشكلة في السيرفر حاول مجدداً")
+                  setLoading(false)
+              });
+          } catch (e) {
+              throw e;
+          }
+        }
+  }
+
   return (
     <Container>
       <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
-        <Col className="dash_component" lg={8} md={12} sm={12}>
+        <Col className="m_t_50 dash_component" lg={8} md={12} sm={12}>
           <TableContainer component={Paper}>
             <Table >
               <TableHead >
@@ -149,11 +395,14 @@ export default function Users() {
                   <TableCell align="center"> الاسم </TableCell>
                   <TableCell align="center"> الأيميل </TableCell>
                   <TableCell align="center"> اسم العائلة </TableCell>
+                  <TableCell align="center"> تعديل المستخدم </TableCell>
                   <TableCell align="center"> حذف المستخدم </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((row) => (
+                {data.map((row) => {
+                  if(row.type_id===2)
+                 return(
                   <StyledTableRow key={row.name}>
                     <StyledTableCell align="center">
                       <img className="table_user_img" src={row.img_url} />
@@ -161,20 +410,103 @@ export default function Users() {
                     <StyledTableCell align="center">{row.name}</StyledTableCell>
                     <StyledTableCell align="center">{row.email}</StyledTableCell>
                     <StyledTableCell align="center">{row.family}</StyledTableCell>
-                    {/* <StyledTableCell align="center"> 
-                      <Button  variant="outline-primary" >تعديل</Button>
-                    </StyledTableCell> */}
+                    <StyledTableCell  align="center"> 
+                      <Button onClick={()=>handleClickOpenChange(row)} variant="outline-primary" >تعديل</Button>
+                    </StyledTableCell>
                     <StyledTableCell align="center"> 
                       <Button onClick={()=>handleClickOpen(row.id)} variant="outline-primary" >حذف</Button>
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
+                )})}
               </TableBody>
             </Table>
           </TableContainer>
         </Col>
         <Col className="dash_component" lg={4} md={12} sm={12} >
-          <Register/>
+        <div className="auth_box m_t_50" >
+                <h4>إنشاء حساب جديد</h4>
+                <div className=" p_t_30 p_10">
+                    <label> أضف صورة</label> <br/> 
+                    <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
+                    <label className="btn-primary btn" for="inputFile1" > أرفع صورتك الشخصية <FileUploadRoundedIcon/> </label>
+                </div>
+                    <TextField
+                        type='email'
+                        label="الأيميل"
+                        variant="standard"
+                        fullWidth
+                        value={email}
+                        onChange={handleChangeEmail}
+                        error={erremail}
+                        />
+                    <div  className={erremail ? 'auth_lable ' : 'auth_lable hidd' }>الأيميل يجب أن يكون صحيحاً </div>
+                
+                    <TextField
+                        type='text'
+                        id="standard-required"
+                        label="الاسم"
+                        variant="standard"
+                        
+                        fullWidth
+                        value={name}
+                        onChange={handleChangeName}
+                        error={errName}
+                        />
+                    <div  className={errName ? 'auth_lable ' : 'auth_lable hidd' }> الاسم يجب أن يكون 3 حروف على الأقل  </div>
+
+                    <FormControl fullWidth variant="standard">
+                        <InputLabel htmlFor="standard-adornment-password">كلمة السر</InputLabel>
+                        <Input
+                            
+                            id="standard-adornment-password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={handleChangepassword}
+                            error={errPassword}
+                            startAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                onMouseUp={handleMouseUpPassword}
+
+                                >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                            
+                            }
+                            
+                        />
+                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }> كلمة السر يجب أن تكون 8 رموز على الأقل  </div><br/>
+                    </FormControl>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">اسم العائلة</InputLabel>
+                        <Select
+                            error={errFamilyId}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={family_id}
+                            label=" اسم العائلة"
+                            onChange={handleChangeFamily}
+                        >
+                            {
+                            families.map((item)=>{
+                                return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                            })
+                            }
+                        </Select>
+                        <div  className={errFamilyId ? 'auth_lable ' : 'auth_lable hidd' }> يجب ادخال اسم العائلة </div>
+                        </FormControl>
+                    <br/>
+                    <br/>
+                    
+                    <Alert  variant="outlined" hidden={errServer===""} severity="error">{errServer}</Alert>
+                    <br/>
+                    <Button onClick={()=>send_data()} className='auth_button' variant="primary">تسجيل حساب</Button>
+
+                </div>
         </Col>
       </Row>
       <Dialog
@@ -197,6 +529,85 @@ export default function Users() {
           </Button>
           <Button onClick={()=>deleteAcc()} autoFocus>
             حذف البيانات
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* change dialog */}
+      <Dialog
+        fullScreen={fullScreen}
+        open={openChange}
+        onClose={handleCloseChange}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+                تعديل بيانات المستخدم
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+          <div className="auth_box m_t_50" >
+                <h4>إنشاء حساب جديد</h4>
+                <div className=" p_t_30 p_10">
+                    <label> أضف صورة</label> <br/> 
+                    <input onChange={handleChangeFileToChange} className="dn" accept="image/*"  type="file" id="_inputFile1_" />
+                    <label className="btn-primary btn" for="_inputFile1_" > أرفع صورتك الشخصية <FileUploadRoundedIcon/> </label>
+                </div>
+                    <TextField
+                        type='email'
+                        label="الأيميل"
+                        variant="standard"
+                        fullWidth
+                        value={emailToChange}
+                        onChange={handleChangeEmailToChange}
+                        error={erremailToChange}
+                        />
+                    <div  className={erremailToChange ? 'auth_lable ' : 'auth_lable hidd' }>الأيميل يجب أن يكون صحيحاً </div>
+                
+                    <TextField
+                        type='text'
+                        id="standard-required"
+                        label="الاسم"
+                        variant="standard"
+                        
+                        fullWidth
+                        value={nameToChange}
+                        onChange={handleChangeNameToChange}
+                        error={errNameToChange}
+                        />
+                    <div  className={errName ? 'auth_lable ' : 'auth_lable hidd' }> الاسم يجب أن يكون 3 حروف على الأقل  </div>
+
+                    
+                    <br/>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">اسم العائلة</InputLabel>
+                        <Select
+                            error={errFamilyIdToChange}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={family_idToChange}
+                            label=" اسم العائلة"
+                            onChange={handleChangeFamilyToChange}
+                        >
+                            {
+                            families.map((item)=>{
+                                return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                            })
+                            }
+                        </Select>
+                        <div  className={errFamilyIdToChange ? 'auth_lable ' : 'auth_lable hidd' }> يجب ادخال اسم العائلة </div>
+                        </FormControl>
+                    <br/>
+                    
+                    <Alert  variant="outlined" hidden={errServerToChange===""} severity="error">{errServerToChange}</Alert>
+                    
+                </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions style={{ textAlign:"start" }}>
+          <Button autoFocus onClick={handleCloseChange}>
+            إلغاء
+          </Button>
+          <Button onClick={()=>changeAcc()} autoFocus>
+            حفظ البيانات
           </Button>
         </DialogActions>
       </Dialog>

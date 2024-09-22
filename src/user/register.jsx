@@ -9,7 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
@@ -20,7 +22,6 @@ import Loading from '../component/loading';
 import axios from "axios";
 import {modeActions} from "../Store"
 import { useLocation } from 'react-router-dom';
-import { FormatListBulletedSharp } from '@mui/icons-material';
 
 
 const Register=()=>{
@@ -37,6 +38,28 @@ const Register=()=>{
     const [email,setEmail]=React.useState('');
     const [name,setName]=React.useState('');
     const [password,setPassword]=React.useState('');
+    const [family_id,setFamily_id]=React.useState(0);
+    const [families,setFamilies]=React.useState([]);
+
+    React.useEffect(() => {
+        setLoading(true);
+        axios.get(url+"showFamilies",
+          {
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept':"application/json"
+            }
+          })
+            .then((response) => {
+                setFamilies(response.data.families);
+                console.log(response.data)
+                setLoading(false)
+            })
+            .catch((error) =>{ 
+              console.log(error);
+               setLoading(false) });
+    }, []);
+
     const [file,setFile] = React.useState(null);
     const handleChangeFile=(e)=>{
         console.log(e.target.files[0])
@@ -48,6 +71,7 @@ const Register=()=>{
     const [erremail,setErrEmail]=React.useState(false);
     const [errName,setErrName]=React.useState(false);
     const [errPassword,setErrPassword]=React.useState(false);
+    const [errFamilyId,setErrFamilyId]=React.useState(false);
     const [errServer,setErrServer]=React.useState('');
 
 
@@ -77,6 +101,11 @@ const Register=()=>{
             setErrName(false)
     }
 
+    const handleChangeFamily=(event)=>{
+        setFamily_id(event.target.value)
+        setErrFamilyId(false)
+    }
+
     const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -95,15 +124,18 @@ const Register=()=>{
             setErrPassword(true)
         if(name==="")
             setErrName(true)
-        if(erremail==="")
+        if(email==="")
             setErrEmail(true)
+        if(family_id===0)
+            setErrFamilyId(true)
 
         
-        if(!errName && !errPassword && !erremail )
+        if(!errName && !errPassword && !erremail && family_id!==0 )
             if(password!=="" && name!=="" && email!==""){
                 var form = new FormData();
                 if(file!==null)
                     form.append('img_url', file);
+                form.append('family_id', family_id);
                 form.append('name', name);
                 form.append('password', password);
                 form.append('phone_no', r);
@@ -207,8 +239,26 @@ const Register=()=>{
                             }
                             
                         />
-                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }> كلمة السر يجب أن تكون 8 رموز على الأقل  </div>
+                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }> كلمة السر يجب أن تكون 8 رموز على الأقل  </div><br/>
                     </FormControl>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">اسم العائلة</InputLabel>
+                        <Select
+                            error={errFamilyId}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={family_id}
+                            label=" اسم العائلة"
+                            onChange={handleChangeFamily}
+                        >
+                            {
+                            families.map((item)=>{
+                                return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                            })
+                            }
+                        </Select>
+                        <div  className={errFamilyId ? 'auth_lable ' : 'auth_lable hidd' }> يجب ادخال اسم العائلة </div>
+                        </FormControl>
                     <br/>
                     <br/>
                     

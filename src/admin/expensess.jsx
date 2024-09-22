@@ -237,6 +237,8 @@ export default function Contributions() {
          });
   }
   
+
+  
   const changeData=()=>{
     setLoading(true)
       try {
@@ -277,12 +279,30 @@ export default function Contributions() {
       }
   }
   
+  const [filterUsType,setFilterUsType] = React.useState(0);
 
   return (
     <Container>
       <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
         <Col className="dash_component" lg={8} md={9} sm={12}>
+              <FormControl style={{ padding : "10px", width:"220px"  }}  >
+                <InputLabel id="demo-simple-select-label"> عرض أنواع المساهمات حسب </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={filterUsType}
+                  label=" عرض أنواع المساهمات حسب "
+                  onChange={(e)=>setFilterUsType(e.target.value)}
+                >
+                  <MenuItem value={0}> جميع الأنواع </MenuItem>
+                  {
+                    types.map((item)=>{
+                      return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                    })
+                  }
+                </Select>
+              </FormControl>
           <TableContainer component={Paper}>
             <Table >
               <TableHead >
@@ -294,19 +314,18 @@ export default function Contributions() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((row) => (
+                {data.map((row) => {
+                  if(row.donation_type_id===filterUsType|| filterUsType===0 )
+                  return(
                   <StyledTableRow key={row.name}>
                     <StyledTableCell align="center">{row.date}</StyledTableCell>
                     <StyledTableCell align="center">{row.type}</StyledTableCell>
                     <StyledTableCell align="center">{row.amount}</StyledTableCell>
-                    {/* {<StyledTableCell align="center"> 
-                      <Button onClick={()=>handleClickOpenChangeDialog(row)} variant="outline-primary" >تعديل</Button>
-                    </StyledTableCell>} */}
                     <StyledTableCell align="center"> 
                       <Button onClick={()=>handleClickOpenDeleteDialog(row.id)} variant="outline-primary" >حذف</Button>
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
+                )})}
               </TableBody>
             </Table>
           </TableContainer>

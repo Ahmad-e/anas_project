@@ -95,6 +95,17 @@
 
     }
 }
+.filter
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter.div
+{
+    padding: 10px;
+}
+
 /* start Admin style*/
 
 .Admin_info_component

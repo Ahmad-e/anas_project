@@ -68,7 +68,7 @@ const Home=()=>{
 
     return(
         <>
-            <Carousel style={{ zIndex:2 }} >
+            <Carousel style={{ height:"400px" ,  zIndex:2 }} >
                 {
                     ads.map((item)=>{
                         return(
