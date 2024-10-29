@@ -31,7 +31,7 @@ const Login=()=>{
 
     const handleChangepassword=(event)=>{
         setPassword(event.target.value)
-        if(event.target.value.length<8)
+        if(event.target.value.length<10)
             setErrPassword(true);
         else
             setErrPassword(false)
@@ -90,7 +90,7 @@ const Login=()=>{
               }).catch((error) => {
 
                   console.log(error)
-                  setErrServer('يوجد خطأ في الأيميل أو كلمة السر')
+                  setErrServer('يوجد خطأ في الاسم أو الرقم الوطني ')
                   setLoading(false)
               });
                   
@@ -121,7 +121,7 @@ const Login=()=>{
                     <div  className={errName ? 'auth_lable ' : 'auth_lable hidd' }> الاسم يجب أن يكون 3 حروف على الأقل  </div>
 
                     <FormControl fullWidth variant="standard">
-                        <InputLabel htmlFor="standard-adornment-password">كلمة السر</InputLabel>
+                        <InputLabel htmlFor="standard-adornment-password"> الرقم الوطني </InputLabel>
                         <Input
                             id="standard-adornment-password"
                             type={showPassword ? 'text' : 'password'}
@@ -143,7 +143,7 @@ const Login=()=>{
                             }
                             
                         />
-                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }>كلمة السر يجب أن تكون 8 رموز على الأقل </div>
+                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }>الرقم الوطني  يجب أن يكون 10 رموز على الأقل </div>
                     </FormControl>
                     <br/><br/>
                     <Alert  variant="outlined" hidden={errServer===""} severity="error">{errServer}</Alert>

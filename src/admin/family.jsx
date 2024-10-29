@@ -1,7 +1,6 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Img from '../images/2.jpg'
 
 
 import * as React from 'react';
@@ -52,21 +51,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 export default function Family() {
 
-  const acc=useSelector((state) => state.account);
+
   const url = useSelector(state=>state.url);
   const token = useSelector(state=>state.token);
 
@@ -127,7 +114,6 @@ export default function Family() {
             setLoading(false)
         })
         .catch((error) =>{ 
-          console.log(error);
            setLoading(false) });
 }, []);
 
@@ -225,7 +211,6 @@ export default function Family() {
             }
         }
         ).then((response) => {
-            console.log(response.data);
             setData(response.data.families);
             setLoading(false)
             handleCloseChangeDialog(false)
@@ -245,6 +230,22 @@ export default function Family() {
     <Container>
       <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
+      <Col className="dash_component" lg={4} md={3} sm={12} >
+          <div className="dash_add_style">
+              <div className=" p_t_30 p_10">
+                <label> أضف لوغو خاص بالعائلة </label><br/>
+                <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
+                <label className="btn-primary btn" for="inputFile1" > إضافة لوغو <FileUploadRoundedIcon/> </label>
+              </div>
+              <div className="p_10">
+                <label>  أدخل اسم العائلة </label>
+                <TextField onChange={handleChangeText} fullWidth id="outlined-basic" label="الاسم" variant="outlined" />
+              </div>
+              <div>
+                <Button onClick={()=>addFamily()} className="m_t_30"> حفظ البيانات </Button>
+              </div>
+          </div>
+        </Col>
         <Col className="dash_component" lg={8} md={9} sm={12}>
           <TableContainer component={Paper}>
             <Table >
@@ -277,20 +278,7 @@ export default function Family() {
             </Table>
           </TableContainer>
         </Col>
-        <Col className="dash_component" lg={4} md={3} sm={12} >
-          <div className=" p_t_30 p_10">
-            <label> أضف لوغو خاص بالعائلة </label><br/>
-            <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
-            <label className="btn-primary btn" for="inputFile1" > إضافة لوغو <FileUploadRoundedIcon/> </label>
-          </div>
-          <div className="p_10">
-            <label>  أدخل اسم العائلة </label>
-            <TextField onChange={handleChangeText} fullWidth id="outlined-basic" label="الاسم" variant="outlined" />
-          </div>
-          <div>
-            <Button onClick={()=>addFamily()} className="m_t_30"> حفظ البيانات </Button>
-          </div>
-        </Col>
+
       </Row>
       <Dialog
         fullScreen={fullScreen}

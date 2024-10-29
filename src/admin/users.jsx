@@ -1,8 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Img from '../images/3.png'
-import Register_test from '../user/register';
+
 
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
@@ -43,8 +42,8 @@ import Select from '@mui/material/Select';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
-
-
+import PhoneInput from 'react-phone-input-2'
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -77,7 +76,7 @@ export default function Users() {
   const [password,setPassword]=React.useState('');
   const [family_id,setFamily_id]=React.useState(0);
   const [families,setFamilies]=React.useState([]);
-
+  const [phone_no,setPhone_no]=React.useState('');
 
   const [file,setFile] = React.useState(null);
   const handleChangeFile=(e)=>{
@@ -90,6 +89,7 @@ export default function Users() {
   const [erremail,setErrEmail]=React.useState(false);
   const [errName,setErrName]=React.useState(false);
   const [errPassword,setErrPassword]=React.useState(false);
+  const [errPhone_no,setErrPhone_no]=React.useState(false);
   const [errFamilyId,setErrFamilyId]=React.useState(false);
   const [errServer,setErrServer]=React.useState('');
 
@@ -106,7 +106,7 @@ export default function Users() {
 
   const handleChangepassword=(event)=>{
       setPassword(event.target.value)
-      if(event.target.value.length<8)
+      if(event.target.value.length<10)
           setErrPassword(true);
       else
           setErrPassword(false)
@@ -120,26 +120,24 @@ export default function Users() {
           setErrName(false)
   }
 
+  const handleChangePhoneNo=(number)=>{
+    setPhone_no(number)
+    if(number.length<8)
+        setErrPhone_no(true);
+    else
+        setErrPhone_no(false)
+}
+
   const handleChangeFamily=(event)=>{
       setFamily_id(event.target.value)
       setErrFamilyId(false)
   }
 
-  const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (event) => {
-    event.preventDefault();
-  };
 
 
   const token = useSelector(state=>state.token);
-  const [data,setData] = React.useState([]);
+  const [users,setUsers] = React.useState([]);
 
 
   const [open, setOpen] = React.useState(false);
@@ -162,6 +160,8 @@ export default function Users() {
     setEmailToChange(user.email);
     setNameToChange(user.name);
     setFamily_idToChange(user.family_id)
+    setPhone_noToChange(user.phone_no)
+    setType_idToChange(user.type_id)
   };
   const handleCloseChange = () => {
     setOpenChange(false);
@@ -178,7 +178,7 @@ export default function Users() {
         }
       })
         .then((response) => {
-            setData(response.data.users);
+            setUsers(response.data.users);
             setFamilies(response.data.families);
             console.log(response.data)
             setLoading(false)
@@ -191,7 +191,6 @@ export default function Users() {
 
 
 const send_data=()=>{
-  var r=(Math.floor(Math.random() * (100 - 10000 + 1)) + 10000)
   if(password==="")
       setErrPassword(true)
   if(name==="")
@@ -200,9 +199,11 @@ const send_data=()=>{
       setErrEmail(true)
   if(family_id===0)
       setErrFamilyId(true)
+  if(phone_no.length<8)
+    setErrPhone_no(true)
 
   
-  if(!errName && !errPassword && !erremail && family_id!==0 )
+  if(!errName && !errPassword && !erremail && family_id!==0 && phone_no.length>7 )
       if(password!=="" && name!=="" && email!==""){
           var form = new FormData();
           if(file!==null)
@@ -210,7 +211,7 @@ const send_data=()=>{
           form.append('family_id', family_id);
           form.append('name', name);
           form.append('password', password);
-          form.append('phone_no', r);
+          form.append('phone_no', phone_no);
           form.append('email', email);
           form.append('type_id', 2);
 
@@ -229,6 +230,7 @@ const send_data=()=>{
                   if(response.data.status===true)
                   {
                       setErrServer('')
+                      window.location.reload();
                   }
                   if(response.data.status===false){
                       setErrServer(response.data.message)
@@ -257,7 +259,7 @@ const send_data=()=>{
         }
       })
         .then((response) => {
-            setData(response.data.users);
+            setUsers(response.data.users);
             console.log(response.data)
             setOpen(false)
             setLoading(false)
@@ -274,8 +276,10 @@ const send_data=()=>{
   const [emailToChange,setEmailToChange]=React.useState('');
   const [nameToChange,setNameToChange]=React.useState('');
   const [passwordToChange,setPasswordToChange]=React.useState('');
+  const [phone_noToChange,setPhone_noToChange]=React.useState('');
   const [family_idToChange,setFamily_idToChange]=React.useState(0);
-  const [familiesToChange,setFamiliesToChange]=React.useState([]);
+  const [type_idToChange,setType_idToChange]=React.useState(0);
+  
 
 
   const [fileToChange,setFileToChange] = React.useState(null);
@@ -289,6 +293,7 @@ const send_data=()=>{
   const [erremailToChange,setErrEmailToChange]=React.useState(false);
   const [errNameToChange,setErrNameToChange]=React.useState(false);
   const [errPasswordToChange,setErrPasswordToChange]=React.useState(false);
+  const [errPhone_noToChange,setErrPhone_noToChange]=React.useState('');
   const [errFamilyIdToChange,setErrFamilyIdToChange]=React.useState(false);
   const [errServerToChange,setErrServerToChange]=React.useState('');
 
@@ -300,13 +305,13 @@ const send_data=()=>{
           setErrEmailToChange(true)
   }
 
-  const handleChangepasswordToChange=(event)=>{
-      setPasswordToChange(event.target.value)
-      if(event.target.value.length<8)
-          setErrPasswordToChange(true);
-      else
-          setErrPasswordToChange(false)
-  }
+  const handleChangePhone_noToChange=(event)=>{
+    setPhone_noToChange(event)
+    if(event.length<8)
+        setErrPhone_noToChange(true);
+    else
+      setErrPhone_noToChange(false)
+}
 
   const handleChangeNameToChange=(event)=>{
       setNameToChange(event.target.value)
@@ -320,6 +325,10 @@ const send_data=()=>{
       setFamily_idToChange(event.target.value)
       setErrFamilyIdToChange(false)
   }
+  const handleChangeType_idToChange=(event)=>{
+    setType_idToChange(event.target.value)
+}
+
   const changeAcc=()=>{
     if(passwordToChange==="")
         setErrPasswordToChange(true)
@@ -329,9 +338,11 @@ const send_data=()=>{
         setErrEmailToChange(true)
     if(family_idToChange===0)
         setErrFamilyIdToChange(true)
+    if(phone_noToChange.length<8)
+      setErrPhone_noToChange(true)
   
     
-    if(!errNameToChange  && !erremailToChange && family_idToChange!==0 )
+    if(!errNameToChange  && !erremailToChange && family_idToChange!==0 && phone_noToChange.length>7 )
         if(nameToChange!=="" && emailToChange!==""){
 
           console.log(nameToChange,emailToChange)
@@ -343,7 +354,9 @@ const send_data=()=>{
           form.append('family_id', family_idToChange);
           form.append('name', nameToChange);
           form.append('email', emailToChange);
-          
+          form.append('type_id', type_idToChange);
+          form.append('phone_no', phone_noToChange);
+
           setLoading(true)
 
           try {
@@ -362,7 +375,7 @@ const send_data=()=>{
                   if(response.data.status===true)
                   {
                       setErrServer('')
-                      setData(response.data.users)
+                      setUsers(response.data.users)
                       console.log(response.data)
                       setOpenChange(false);
                   }
@@ -386,50 +399,10 @@ const send_data=()=>{
     <Container>
       <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
-        <Col className="m_t_50 dash_component" lg={8} md={12} sm={12}>
-          <TableContainer component={Paper}>
-            <Table >
-              <TableHead >
-                <TableRow>
-                  <TableCell align="center"> الصورة الشخصية </TableCell>
-                  <TableCell align="center"> الاسم </TableCell>
-                  <TableCell align="center"> الأيميل </TableCell>
-                  <TableCell align="center"> اسم العائلة </TableCell>
-                  <TableCell align="center"> تعديل المستخدم </TableCell>
-                  <TableCell align="center"> حذف المستخدم </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.map((row) => {
-                  if(row.type_id===2)
-                 return(
-                  <StyledTableRow key={row.name}>
-                    <StyledTableCell align="center">
-                      <img className="table_user_img" src={row.img_url} />
-                    </StyledTableCell>
-                    <StyledTableCell align="center">{row.name}</StyledTableCell>
-                    <StyledTableCell align="center">{row.email}</StyledTableCell>
-                    <StyledTableCell align="center">{row.family}</StyledTableCell>
-                    <StyledTableCell  align="center"> 
-                      <Button onClick={()=>handleClickOpenChange(row)} variant="outline-primary" >تعديل</Button>
-                    </StyledTableCell>
-                    <StyledTableCell align="center"> 
-                      <Button onClick={()=>handleClickOpen(row.id)} variant="outline-primary" >حذف</Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )})}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Col>
-        <Col className="dash_component" lg={4} md={12} sm={12} >
+      <Col className="dash_component" lg={4} md={12} sm={12} >
         <div className="auth_box m_t_50" >
                 <h4>إنشاء حساب جديد</h4>
-                <div className=" p_t_30 p_10">
-                    <label> أضف صورة</label> <br/> 
-                    <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
-                    <label className="btn-primary btn" for="inputFile1" > أرفع صورتك الشخصية <FileUploadRoundedIcon/> </label>
-                </div>
+                
                     <TextField
                         type='email'
                         label="الأيميل"
@@ -455,32 +428,29 @@ const send_data=()=>{
                     <div  className={errName ? 'auth_lable ' : 'auth_lable hidd' }> الاسم يجب أن يكون 3 حروف على الأقل  </div>
 
                     <FormControl fullWidth variant="standard">
-                        <InputLabel htmlFor="standard-adornment-password">كلمة السر</InputLabel>
+                        <InputLabel htmlFor="standard-adornment-password"> الرقم الوطني </InputLabel>
                         <Input
                             
                             id="standard-adornment-password"
-                            type={showPassword ? 'text' : 'password'}
+                            type='number'
                             value={password}
                             onChange={handleChangepassword}
                             error={errPassword}
-                            startAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                onMouseUp={handleMouseUpPassword}
-
-                                >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                            
-                            }
                             
                         />
-                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }> كلمة السر يجب أن تكون 8 رموز على الأقل  </div><br/>
+                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }>   الرقم الوطني يجب أن يكون أرقام من 10 خانات   </div><br/>
                     </FormControl>
+
+                    <PhoneInput
+                        error={errPhone_no}
+                        country={'sa'}
+                        value={phone_no}
+                        onChange={phone => handleChangePhoneNo( phone )}
+                    />
+                    <div  className={errPhone_no ? 'auth_lable ' : 'auth_lable hidd' }> رقم الهاتف يجب أن يكون موجود  </div><br/>
+                    <br/>
+
+
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">اسم العائلة</InputLabel>
                         <Select
@@ -508,7 +478,52 @@ const send_data=()=>{
 
                 </div>
         </Col>
+        <Col className="m_t_50 dash_component" lg={8} md={12} sm={12}>
+          <TableContainer component={Paper}>
+            <Table >
+              <TableHead >
+                <TableRow>
+                  <TableCell align="center"> نوع الحساب </TableCell>
+                  <TableCell align="center"> الاسم </TableCell>
+                  <TableCell align="center"> الأيميل </TableCell>
+                  <TableCell align="center"> قم الهاتف </TableCell>
+                  <TableCell align="center"> اسم العائلة </TableCell>
+                  <TableCell align="center"> تعديل المستخدم </TableCell>
+                  <TableCell align="center"> حذف المستخدم </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {users.map((row,index) => {
+                
+                 return(
+                  <StyledTableRow key={row.id}>
+                    <StyledTableCell align="center">{ row.type==="admin" ? ("أدمن") : ("مشترك") }</StyledTableCell>
+                    <StyledTableCell align="center">{row.name}</StyledTableCell>
+                    <StyledTableCell align="center">{row.email}</StyledTableCell>
+                    <StyledTableCell align="center">{row.phone_no}</StyledTableCell>
+                    <StyledTableCell align="center">{row.family}</StyledTableCell>
+                    <StyledTableCell  align="center"> 
+                      <Button hidden={index===0} onClick={()=>handleClickOpenChange(row)} variant="outline-primary" >تعديل</Button>
+                    </StyledTableCell>
+                    <StyledTableCell  align="center"> 
+                      <Button hidden={index===0} onClick={()=>handleClickOpen(row.id)} variant="outline-primary" >حذف</Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )})}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Col>
+
       </Row>
+
+      <Row className='fullWidth m_t_50 justify-content-center'>
+          <div>
+              <Button href={url+"export_users"} className="m_t_30">  تحميل ملف البيانات  <FileDownloadIcon/></Button>
+          </div>
+      </Row>
+
+      
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -546,11 +561,6 @@ const send_data=()=>{
           <DialogContentText>
           <div className="auth_box m_t_50" >
                 <h4>إنشاء حساب جديد</h4>
-                <div className=" p_t_30 p_10">
-                    <label> أضف صورة</label> <br/> 
-                    <input onChange={handleChangeFileToChange} className="dn" accept="image/*"  type="file" id="_inputFile1_" />
-                    <label className="btn-primary btn" for="_inputFile1_" > أرفع صورتك الشخصية <FileUploadRoundedIcon/> </label>
-                </div>
                     <TextField
                         type='email'
                         label="الأيميل"
@@ -573,10 +583,18 @@ const send_data=()=>{
                         onChange={handleChangeNameToChange}
                         error={errNameToChange}
                         />
-                    <div  className={errName ? 'auth_lable ' : 'auth_lable hidd' }> الاسم يجب أن يكون 3 حروف على الأقل  </div>
+                    <div  className={errNameToChange ? 'auth_lable ' : 'auth_lable hidd' }> الاسم يجب أن يكون 3 حروف على الأقل  </div>
 
+                    <br/> 
+                    <PhoneInput
+                        error={errPhone_noToChange}
+                        country={'sa'}
+                        value={phone_noToChange}
+                        onChange={phone => handleChangePhone_noToChange( phone )}
+                    />
+                    <div  className={errPhone_noToChange ? 'auth_lable ' : 'auth_lable hidd' }> رقم الهاتف يجب أن يكون موجود  </div><br/>
                     
-                    <br/>
+                    
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">اسم العائلة</InputLabel>
                         <Select
@@ -594,7 +612,22 @@ const send_data=()=>{
                             }
                         </Select>
                         <div  className={errFamilyIdToChange ? 'auth_lable ' : 'auth_lable hidd' }> يجب ادخال اسم العائلة </div>
-                        </FormControl>
+                    </FormControl><br/>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">نوع  الحساب</InputLabel>
+                        <Select
+                        
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={type_idToChange}
+                            label=" نوع الحساب "
+                            onChange={handleChangeType_idToChange}
+                        >
+                            <MenuItem value={1}> أدمن </MenuItem>
+                            <MenuItem value={2}> مشترك </MenuItem>
+                        </Select>
+                        <div  className={errFamilyIdToChange ? 'auth_lable ' : 'auth_lable hidd' }> يجب ادخال اسم العائلة </div>
+                    </FormControl>
                     <br/>
                     
                     <Alert  variant="outlined" hidden={errServerToChange===""} severity="error">{errServerToChange}</Alert>

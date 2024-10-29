@@ -17,6 +17,9 @@ import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import WrapTextIcon from '@mui/icons-material/WrapText';
 import CelebrationIcon from '@mui/icons-material/Celebration';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import NotesIcon from '@mui/icons-material/Notes';
+
 
 const NavBar=()=>{
 
@@ -49,23 +52,38 @@ const NavBar=()=>{
                 </Nav.Link>
             <Nav.Link className='Admin_link' href="./users">
                 <GroupAddOutlinedIcon/>
-                <p className={"link_text "+(open ? (''):('dn'))}>المستخدمين</p>
+                <p className={"link_text "+(open ? (''):('dn'))}>المشتركين</p>
                 </Nav.Link>
             <Nav.Link className='Admin_link' href="./contributions">
                 <ContactMailOutlinedIcon/>
-                <p className={"link_text "+(open ? (''):('dn'))}>المساهمات</p>
-                </Nav.Link>
+                <p className={"link_text "+(open ? (''):('dn'))}>الإيرادات</p>
+            </Nav.Link>
+            <Nav.Link className='Admin_link' href="./types">
+                <WrapTextIcon/>
+                <p className={"link_text "+(open ? (''):('dn'))}>أنواع الإيرادات</p>
+            </Nav.Link>
             <Nav.Link className='Admin_link' href="./expensess">
                 <MonetizationOnOutlinedIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}>المصاريف</p>
             </Nav.Link>
-            <Nav.Link className='Admin_link' href="./types">
+            <Nav.Link className='Admin_link' href="./expensessType">
                 <WrapTextIcon/>
-                <p className={"link_text "+(open ? (''):('dn'))}>أنواع المساهمات</p>
+                <p className={"link_text "+(open ? (''):('dn'))}>أنواع المصاريف</p>
             </Nav.Link>
-            <Nav.Link className='Admin_link' href="./zakat">
+
+            <Nav.Link className='Admin_link' href="./subscrip">
+                <CalendarMonthOutlinedIcon/>
+                <p className={"link_text "+(open ? (''):('dn'))}>  الاشتراكات   </p>
+            </Nav.Link>
+
+            {/* <Nav.Link className='Admin_link' href="./zakat">
                 <CalculateOutlinedIcon/>
                 <p className={"link_text "+(open ? (''):('dn'))}> دفعات الزكاة</p>
+            </Nav.Link> */}
+
+            <Nav.Link className='Admin_link' href="./content">
+                <NotesIcon />
+                <p className={"link_text "+(open ? (''):('dn'))}> المحتوى التعريفي </p>
             </Nav.Link>
             <Nav.Link className='Admin_link' href="./ads">
                 <ViewCarouselIcon />

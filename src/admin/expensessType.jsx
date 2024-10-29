@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-
+import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 import Button from 'react-bootstrap/Button';
 
 import { styled } from '@mui/material/styles';
@@ -53,10 +53,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-
 export default function Types() {
 
-  
+  const acc=useSelector((state) => state.account);
   const url = useSelector(state=>state.url);
   const token = useSelector(state=>state.token);
 
@@ -92,7 +91,7 @@ export default function Types() {
 
   React.useEffect(() => {
     setLoading(true);
-    axios.get(url+"showDonationsTypes",
+    axios.get(url+"showExpenseTypes",
       {
         headers:{
             'Content-Type': 'application/json',
@@ -119,7 +118,7 @@ export default function Types() {
       console.log(text)
       setLoading(true)
       try {
-        const response = axios.post(url+'addDonationType', {
+        const response = axios.post(url+'addExpenseType', {
               name:text
           },
           {
@@ -132,7 +131,8 @@ export default function Types() {
             if(response.data.status)
             {     
               setData(response.data.types)
-              setLoading(false);
+                  console.log(response.data);
+                  setLoading(false);
             }
             else
             {
@@ -163,7 +163,7 @@ export default function Types() {
     if(changedText!==""){
       setLoading(true)
       try {
-        const response = axios.post(url+'editDonationType', {
+        const response = axios.post(url+'editExpenseType', {
               id:idToChange,
               name:changedText
           },
@@ -177,7 +177,8 @@ export default function Types() {
             if(response.data.status)
             { 
               setOpen(false)    
-              setData(response.data.families)
+              setData(response.data.types)
+                  console.log(response.data);
                   setLoading(false);
             }
             else
@@ -203,7 +204,7 @@ export default function Types() {
   const  deleteData=()=>{
       console.log(idToDelete);
 
-      axios.get(url+"deleteDonationType/"+idToDelete,
+      axios.get(url+"deleteExpenseType/"+idToDelete,
       {
         headers:{
             'Content-Type': 'application/json',
@@ -212,7 +213,8 @@ export default function Types() {
         }
       })
         .then((response) => {
-            setData(response.data.ads);
+            setData(response.data.types);
+            console.log(response.data)
             setOpenDeleteDialog(false)
             setLoading(false)
         })
@@ -227,11 +229,11 @@ export default function Types() {
     <Container>
       <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
-        <Col className="dash_component " lg={4} md={3} sm={12} >
+        <Col className="dash_component" lg={4} md={3} sm={12} >
           <div className="dash_add_style">
             <div className="p_10">
-              <label>  أدخل اسم لنوع المساهمة  </label>
-              <TextField onChange={handleChangeText}  fullWidth id="outlined-basic" label=" نوع المساهمة" variant="outlined" />
+              <label>  أدخل اسم لنوع المصاريف  </label>
+              <TextField onChange={handleChangeText}  fullWidth id="outlined-basic" label=" نوع المصاريف" variant="outlined" />
             </div>
             <div>
               <Button onClick={()=>sendData()} className="m_t_30"> حفظ البيانات </Button>
@@ -276,14 +278,14 @@ export default function Types() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-        ادخل اسم جديد  لنوع المساهمة 
+        ادخل اسم جديد  لنوع المصاريف 
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
               
                 <div className="a_c p_10">
-                  <label>   سيتم تعديل المساهمات  السابقة بنفس الاسم </label>
-                  <TextField onChange={handleChangeTextToChange}  fullWidth id="outlined-basic" label=" نوع المساهمة " variant="outlined" />
+                  <label>   سيتم تعديل المصاريف  السابقة بنفس الاسم </label>
+                  <TextField onChange={handleChangeTextToChange}  fullWidth id="outlined-basic" label=" نوع المصاريف " variant="outlined" />
                 </div>
           </DialogContentText>
         </DialogContent>
@@ -306,7 +308,7 @@ export default function Types() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-            حذف نوع المساهمة يعني أن المساهمات بنفس هذا النوع سوف تحذف
+            حذف نوع المصاريف يعني أن المصاريف بنفس هذا النوع سوف تحذف
         </DialogTitle>
         <DialogContent>
             

@@ -17,11 +17,13 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import axios from "axios";
-
+import Button from 'react-bootstrap/Button';
 
 const Home = () => {
 
@@ -109,7 +111,7 @@ const Home = () => {
             throw e;
     }
   }
-  
+
   return (
     <Container>
       <Loading loading={false}/>
@@ -141,7 +143,7 @@ const Home = () => {
       <Row className='fullWidth m_t_50 justify-content-center'>
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div >
-            <p> المستخدمين الجدد </p>
+            <p> المشتركين الجدد </p>
             <h3>{data.users_count}</h3>
           </div>
           <div >
@@ -159,7 +161,7 @@ const Home = () => {
         </Col>
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div>
-            <p> المساهمات </p>
+            <p> الإيرادات </p>
             <h3> {data.total_donations_now} </h3>
           </div>
           <div>
@@ -168,6 +170,24 @@ const Home = () => {
         </Col>
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div>
+            <p> عدد الأشتراكات </p>
+            <h3> {data.subscription_count} </h3>
+          </div>
+          <div>
+            <PlaylistAddIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
+          </div>
+        </Col>
+        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+          <div>
+            <p> محصلة دفعات الأشتراكات </p>
+            <h3> {data.total_subscriptions} </h3>
+          </div>
+          <div>
+            <CalendarMonthOutlinedIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
+          </div>
+        </Col>
+        {/* <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+          <div>
             <p> الزكاة المدفوعة </p>
             <h3> {data.total_zaka} </h3>
           </div>
@@ -175,7 +195,7 @@ const Home = () => {
             <PlaylistAddIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
           </div>
 
-        </Col>
+        </Col> */}
         <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div>
             <p> المحفظة الحالية </p>
@@ -185,16 +205,8 @@ const Home = () => {
             <AccountBalanceWalletIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
           </div>
         </Col>
-        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
-          <div>
-            <p> المساهمات المدفوعة من سنة </p>
-            <h3> {data.total_donations} </h3>
-          </div>
-          <div>
-            <MonetizationOnOutlinedIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
-          </div>
-        </Col>
-        <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
+
+        {/* <Col lg={3} md={4} sm={6} xs={8} className="Admin_info_component">
           <div>
             <p> الزكاة المدفوعة من سنة </p>
             <h3> {data.total_zaka_old} </h3>
@@ -203,18 +215,24 @@ const Home = () => {
             <PlaylistAddIcon style={{ fontSize:"40px" ,marginTop:"-3px" }}/>
           </div>
 
-        </Col>
-        <Col lg={6} md={8} sm={6} xs={8} className="Admin_info_component">
+        </Col> */}
+        {/* <Col lg={6} md={8} sm={6} xs={8} className="Admin_info_component">
           <div>
-            <p> الزكاة المفروضة و غير المدفوعة </p>
-            <h2 style={{ fontWeight:"bolder" }}> {data.zaka_on_total_donations} </h2>
+            <p> المساهمات المدفوعة من سنة  </p>
+            <h2 style={{ fontWeight:"bolder" }}> {data.total_donations}</h2>
           </div>
 
           <div>
             <DomainVerificationIcon style={{ fontSize:"65px" ,marginTop:"-6px" }}/>
           </div>
           
-        </Col>
+        </Col> */}
+      </Row>
+      <Row className='fullWidth m_t_50 justify-content-center'>
+        <Button href={url+"export_all"} >
+          تصدير نسخة من البيانات
+          < FileDownloadIcon />
+        </Button>
       </Row>
     </Container>
   );

@@ -15,6 +15,7 @@ const Home=()=>{
         )
 
     return(
+        <>
         <div className='full_container'>
             <div className=' '>
                 <NavBar/>
@@ -22,8 +23,13 @@ const Home=()=>{
             <div className='admin_content'>
                 <Outlet />
             </div>
+            
         </div>
-        
+
+        <div className='space'>
+
+        </div>
+        </>
     )
 }
 export default Home

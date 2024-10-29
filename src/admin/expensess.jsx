@@ -34,6 +34,7 @@ import { useSelector } from 'react-redux';
 
 import Loading from '../component/loading';
 import axios from "axios";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -176,7 +177,7 @@ export default function Contributions() {
       setLoading(true)
       try {
         const response = axios.post(url+'addExpense', {
-          donation_type_id: typeId,
+          expense_type_id: typeId,
           amount: mony,
           date: date,
           },
@@ -285,14 +286,53 @@ export default function Contributions() {
     <Container>
       <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
+        <Col className="dash_component " style={{ alignItems:"start" }} lg={4} md={3} sm={10} xs={12} >
+            <div className="dash_add_style">
+              <div className=" p_10">
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">نوعية التكلفة </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={typeId}
+                    label="نوعية المساهمة"
+                    onChange={handleChangeTypeId}
+                  >
+                    {
+                      types.map((item)=>{
+                        return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                      })
+                    }
+                  </Select>
+                </FormControl>
+                  
+
+              </div>
+              <div className="p_10">
+                <TextField onChange={handleChangeMony} type="number"  fullWidth id="outlined-basic" label="المبلغ" variant="outlined" />
+              </div>
+              <div className="p_10"> 
+                <label> تاريخ أداء التكلفة </label>
+                <label>التاريخ مهم لحساب الزكاة</label>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={['DatePicker']}>
+                    <DatePicker onChange={handleChangeDate} label="" />
+                  </DemoContainer>
+                </LocalizationProvider>
+              </div>
+              <div>
+                <Button onClick={()=>addData()} className="m_t_30"> حفظ البيانات </Button>
+              </div>
+            </div>
+        </Col>
         <Col className="dash_component" lg={8} md={9} sm={12}>
               <FormControl style={{ padding : "10px", width:"220px"  }}  >
-                <InputLabel id="demo-simple-select-label"> عرض أنواع المساهمات حسب </InputLabel>
+                <InputLabel id="demo-simple-select-label"> عرض حسب</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={filterUsType}
-                  label=" عرض أنواع المساهمات حسب "
+                  label=" عرض حسب "
                   onChange={(e)=>setFilterUsType(e.target.value)}
                 >
                   <MenuItem value={0}> جميع الأنواع </MenuItem>
@@ -315,7 +355,7 @@ export default function Contributions() {
               </TableHead>
               <TableBody>
                 {data.map((row) => {
-                  if(row.donation_type_id===filterUsType|| filterUsType===0 )
+                  if(row.expense_type_id===filterUsType|| filterUsType===0 )
                   return(
                   <StyledTableRow key={row.name}>
                     <StyledTableCell align="center">{row.date}</StyledTableCell>
@@ -330,44 +370,12 @@ export default function Contributions() {
             </Table>
           </TableContainer>
         </Col>
-        <Col className="dash_component" style={{ alignItems:"start" }} lg={4} md={3} sm={10} xs={12} >
-          
-          <div className=" p_10">
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">نوعية التكلفة </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={typeId}
-                label="نوعية المساهمة"
-                onChange={handleChangeTypeId}
-              >
-                {
-                  types.map((item)=>{
-                    return(<MenuItem value={item.id}> {item.name} </MenuItem>)
-                  })
-                }
-              </Select>
-            </FormControl>
-              
 
-          </div>
-          <div className="p_10">
-            <TextField onChange={handleChangeMony} type="number"  fullWidth id="outlined-basic" label="المبلغ" variant="outlined" />
-          </div>
-          <div className="p_10"> 
-            <label> تاريخ أداء التكلفة </label>
-            <label>التاريخ مهم لحساب الزكاة</label>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DatePicker']}>
-                <DatePicker onChange={handleChangeDate} label="" />
-              </DemoContainer>
-            </LocalizationProvider>
-          </div>
+      </Row>
+      <Row className='fullWidth m_t_50 justify-content-center'>
           <div>
-            <Button onClick={()=>addData()} className="m_t_30"> حفظ البيانات </Button>
+              <Button href={url+"export_expenses"} className="m_t_30">  تحميل ملف البيانات  <FileDownloadIcon/></Button>
           </div>
-        </Col>
       </Row>
 
       <Dialog

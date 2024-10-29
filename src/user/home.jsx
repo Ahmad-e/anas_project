@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import {useState,useEffect} from 'react'
 import SvgHome from '../svgs/home';
 import axios from "axios";
-
+import Err from '../svgs/err404'
 
 const Home=()=>{
     const url = useSelector(state=>state.url);
@@ -22,6 +22,7 @@ const Home=()=>{
         const [ads, setAds] = useState([]);
         const [events, setEvents] = useState([]);
         const [users, setUsers] = useState([]);
+        const [info, setInfo] = useState({});
       
         const handleSelect = (selectedIndex) => {
           setIndex(selectedIndex);
@@ -59,6 +60,7 @@ const Home=()=>{
                 setAds(response.data.ads)
                 setEvents(response.data.events)
                 setUsers(response.data.top_users)
+                setInfo(response.data.home_info[0])
                 console.log(response.data)
             })
             .catch((error) =>{ 
@@ -66,61 +68,46 @@ const Home=()=>{
             });
     }, []);
 
+
+    const acc=useSelector((state) => state.account);
+    if(acc!=="1" && acc!=="2" )
+        return(
+            <>
+            <br/><br/><br/>
+                            <h4>
+                    لا يمكنك الدخول إلى هذه الصفحة 
+                </h4>
+                <div>
+                    تأكد من   تسجيل دخولك إلى  الموقع بشكل صحيح
+                </div>
+                <p> يمكنك الدخول <a href='login'>صفحة تسجيل الدخول</a> </p>
+            </>
+        )
+
     return(
         <>
-            <Carousel style={{ height:"400px" ,  zIndex:2 }} >
-                {
-                    ads.map((item)=>{
-                        return(
-                            <Carousel.Item interval={4000}>
-                                <img className='carsl_img' src={item.img_url} />
-                                <Carousel.Caption>
-                                    
-                                    <p>{ item.name }</p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
-                        )
-                    })
-                }
-
-                {
-                    events.map((item)=>{
-                        return(
-                            <Carousel.Item interval={4000}>
-                                <img className='carsl_img' src={item.img_url}/>
-                                <Carousel.Caption>
-                                <h3>سيتم بتاريخ { item.date }</h3>
-                                    <p>{ item.name }</p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
-                        )
-                    })
-                }
-                
+            
+            <Container>
 
 
-                </Carousel>
-                
-            <Container >
-                
-                <Row style={{ zIndex:2 }}  className='m_t_50 justify-content-center'>
-                    <Col  lg={6} md={8} xs={12}>
-                        <SvgHome />
-                    </Col>
-                    <Col style={{ textAlign:"start" }} lg={6}md={4} xs={12}>
-                        <h3 className='main_color home_text'>
-                        سواعد متكاتفة 
+
+                <Row style={{ zIndex:2 }}  className=' justify-content-center'>
+                    
+                    <Col className='m_t_30 p_t_30' style={{ textAlign:"start" }} lg={6}md={4} xs={12}>
+                        <h3 className='main_color'>
+                            {info.title}
                         </h3>
                         <p>
-                        موقع مخصص للأسرة يهتم بدراسة وتحليل التبرعات والمصروفات الخاصة والداخلية وحساب الزكاة المفروضة
+                            {info.text}
                         </p>
                     </Col>
+                    <Col  lg={6} md={8} xs={12}>
+                        <img className='home_img' src={info.img_url} />
+                    </Col>
                 </Row>
-                <Row style={{ zIndex:2 }}  className='m_t_50 p_t_30 fullWidth justify-content-center'>
-                    <hr/>    
-                </Row>
-                <Row style={{ zIndex:2 }} className='m_t_50 justify-content-center'>
-                    <Col lg={12} sm={12}>
+                
+                {/* <Row style={{ zIndex:2 }} className='m_t_50 justify-content-center'>
+                    <Col className='m_t_50 p_t_50' lg={12} sm={12}>
                         <h3 className='main_color'>
                             الأعضاء الأكثر  مساهمة 
                         </h3>
@@ -135,7 +122,55 @@ const Home=()=>{
 
 
                 </Row>
+                <Row style={{ zIndex:2 }}  className='m_t_50 p_t_30 fullWidth justify-content-center'>
+                    <hr/>    
+                </Row> */}
+
+                <Row style={{ zIndex:2 }}  className='m_t_50 p_t_30 fullWidth justify-content-center'>
+                    <hr/>    
+                </Row>
             </Container>
+
+            <Container >
+
+
+                    <Col className='m_t_50 justify-content-center' lg={8} md={7} sm={12}>
+                        <Carousel style={{ height:"400px" ,  zIndex:2 }} >
+                            {
+                                ads.map((item)=>{
+                                    return(
+                                        <Carousel.Item interval={4000}>
+                                            <img className='carsl_img' src={item.img_url} />
+                                            <Carousel.Caption className={mode}>
+                                                
+                                                <p>{ item.name }</p>
+                                            </Carousel.Caption>
+                                        </Carousel.Item>
+                                    )
+                                })
+                            }
+
+                            {
+                                events.map((item)=>{
+                                    return(
+                                        <Carousel.Item interval={4000}>
+                                            <img className='carsl_img' src={item.img_url}/>
+                                            <Carousel.Caption className={mode}>
+                                            <h3>سيتم بتاريخ { item.date }</h3>
+                                                <p>{ item.name }</p>
+                                            </Carousel.Caption>
+                                        </Carousel.Item>
+                                    )
+                                })
+                            }
+                            
+
+
+                        </Carousel>
+                    </Col>
+            </Container>
+
+
         </>
     )
 }

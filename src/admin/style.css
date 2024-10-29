@@ -81,6 +81,17 @@
     background-size: cover;
     object-fit: cover;
 }
+.dash_add_style
+{
+    border-radius: 4px;
+    background-color: rgba(10, 10, 10, 0.04);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 25px 15px;
+}
+.space
+{
+    height: 100px;
+}
 
 @media only screen and (max-width: 750px) {
     .admin_nav

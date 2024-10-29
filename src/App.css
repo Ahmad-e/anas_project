@@ -106,3 +106,7 @@ hr
   transition: transform .6s ease-in-out;
   transition: transform .6s  ease-in-out,-webkit-transform .6s  ease-in-out;
 } 
+input[type=checkbox]
+{
+  visibility: hidden;
+}

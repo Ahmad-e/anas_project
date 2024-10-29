@@ -178,7 +178,24 @@ export default function Ads() {
   return (
     <Container>
       <Loading loading={loading}/>
+
       <Row className='fullWidth m_t_50 justify-content-center'>
+        <Col className="dash_component" lg={4} md={3} sm={12} >
+            <div className="dash_add_style">
+              <div className=" p_t_30 p_10">
+                <label> أضف صورة للإعلان </label><br/>
+                <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
+                <label className="btn-primary btn" for="inputFile1" > رفع صورة <FileUploadRoundedIcon/> </label>
+              </div>
+              <div className="p_10">
+                <label> أضف نص توضيحي فوق الصورة </label>
+                <TextField onChange={handleChangeText} multiline minRows={3} fullWidth id="outlined-basic" label="النص التعريفي" variant="outlined" />
+              </div>
+              <div>
+                <Button onClick={()=>addAd()} className="m_t_30"> حفظ البيانات </Button>
+              </div>
+            </div>
+        </Col>
         <Col className="dash_component" lg={8} md={9} sm={12}>
           <TableContainer component={Paper}>
             <Table >
@@ -207,20 +224,7 @@ export default function Ads() {
             </Table>
           </TableContainer>
         </Col>
-        <Col className="dash_component" lg={4} md={3} sm={12} >
-          <div className=" p_t_30 p_10">
-            <label> أضف صورة للإعلان </label><br/>
-            <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
-            <label className="btn-primary btn" for="inputFile1" > رفع صورة <FileUploadRoundedIcon/> </label>
-          </div>
-          <div className="p_10">
-            <label> أضف نص توضيحي فوق الصورة </label>
-            <TextField onChange={handleChangeText} multiline minRows={3} fullWidth id="outlined-basic" label="النص التعريفي" variant="outlined" />
-          </div>
-          <div>
-            <Button onClick={()=>addAd()} className="m_t_30"> حفظ البيانات </Button>
-          </div>
-        </Col>
+
       </Row>
       <Dialog
         fullScreen={fullScreen}

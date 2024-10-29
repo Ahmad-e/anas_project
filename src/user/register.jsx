@@ -24,6 +24,9 @@ import {modeActions} from "../Store"
 import { useLocation } from 'react-router-dom';
 
 
+import PhoneInput from 'react-phone-input-2'
+
+
 const Register=()=>{
 
     const location = useLocation();
@@ -38,6 +41,7 @@ const Register=()=>{
     const [email,setEmail]=React.useState('');
     const [name,setName]=React.useState('');
     const [password,setPassword]=React.useState('');
+    const [phone_no,setPhone_no]=React.useState('');
     const [family_id,setFamily_id]=React.useState(0);
     const [families,setFamilies]=React.useState([]);
 
@@ -71,6 +75,7 @@ const Register=()=>{
     const [erremail,setErrEmail]=React.useState(false);
     const [errName,setErrName]=React.useState(false);
     const [errPassword,setErrPassword]=React.useState(false);
+    const [errPhone_no,setErrPhone_no]=React.useState(false);
     const [errFamilyId,setErrFamilyId]=React.useState(false);
     const [errServer,setErrServer]=React.useState('');
 
@@ -87,10 +92,11 @@ const Register=()=>{
 
     const handleChangepassword=(event)=>{
         setPassword(event.target.value)
-        if(event.target.value.length<8)
+        if(event.target.value.length<10)
             setErrPassword(true);
         else
-            setErrPassword(false)
+            setErrPassword(false);
+        
     }
 
     const handleChangeName=(event)=>{
@@ -99,6 +105,14 @@ const Register=()=>{
             setErrName(true);
         else
             setErrName(false)
+    }
+
+    const handleChangePhoneNo=(number)=>{
+        setPhone_no(number)
+        if(number.length<8)
+            setErrPhone_no(true);
+        else
+            setErrPhone_no(false)
     }
 
     const handleChangeFamily=(event)=>{
@@ -119,18 +133,21 @@ const Register=()=>{
     };
 
     const send_data=()=>{
-        var r=(Math.floor(Math.random() * (100 - 10000 + 1)) + 10000)
+        
         if(password==="")
             setErrPassword(true)
         if(name==="")
             setErrName(true)
         if(email==="")
             setErrEmail(true)
+        if(phone_no.length<8)
+            setErrPhone_no(true)
+
         if(family_id===0)
             setErrFamilyId(true)
 
         
-        if(!errName && !errPassword && !erremail && family_id!==0 )
+        if(!errName && !errPassword && !erremail && family_id!==0 && !errPhone_no)
             if(password!=="" && name!=="" && email!==""){
                 var form = new FormData();
                 if(file!==null)
@@ -138,7 +155,7 @@ const Register=()=>{
                 form.append('family_id', family_id);
                 form.append('name', name);
                 form.append('password', password);
-                form.append('phone_no', r);
+                form.append('phone_no', phone_no);
                 form.append('email', email);
                 form.append('type_id', 2);
 
@@ -184,12 +201,7 @@ const Register=()=>{
             <Row className='justify-content-center' >
                 <Loading loading={loading}/>
                 <div className="auth_box m_t_50" >
-                <h4>إنشاء حساب جديد</h4>
-                <div className=" p_t_30 p_10">
-                    <label> أضف صورة</label> <br/> 
-                    <input onChange={handleChangeFile} className="dn" accept="image/*"  type="file" id="inputFile1" />
-                    <label className="btn-primary btn" for="inputFile1" > أرفع صورتك الشخصية <FileUploadRoundedIcon/> </label>
-                </div>
+                
                     <TextField
                         type='email'
                         label="الأيميل"
@@ -215,32 +227,27 @@ const Register=()=>{
                     <div  className={errName ? 'auth_lable ' : 'auth_lable hidd' }> الاسم يجب أن يكون 3 حروف على الأقل  </div>
 
                     <FormControl fullWidth variant="standard">
-                        <InputLabel htmlFor="standard-adornment-password">كلمة السر</InputLabel>
+                        <InputLabel htmlFor="standard-adornment-password"> الرقم الوطني </InputLabel>
                         <Input
                             
                             id="standard-adornment-password"
-                            type={showPassword ? 'text' : 'password'}
+                            type='number'
                             value={password}
                             onChange={handleChangepassword}
                             error={errPassword}
-                            startAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                onMouseUp={handleMouseUpPassword}
-
-                                >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                            
-                            }
                             
                         />
-                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }> كلمة السر يجب أن تكون 8 رموز على الأقل  </div><br/>
+                        <div  className={errPassword ? 'auth_lable ' : 'auth_lable hidd' }>   الرقم الوطني يجب أن يكون أرقام من 10 خانات   </div><br/>
                     </FormControl>
+
+                    <PhoneInput
+                        error={errPhone_no}
+                        country={'sa'}
+                        value={phone_no}
+                        onChange={phone => handleChangePhoneNo( phone )}
+                    />
+                    <div  className={errPhone_no ? 'auth_lable ' : 'auth_lable hidd' }> رقم الهاتف يجب أن يكون موجود  </div><br/>
+                    <br/>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">اسم العائلة</InputLabel>
                         <Select

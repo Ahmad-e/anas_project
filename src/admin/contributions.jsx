@@ -21,7 +21,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -289,6 +289,66 @@ export default function Contributions() {
     <Container>
       <Loading loading={loading}/>
       <Row className='fullWidth m_t_50 justify-content-center'>
+        <Col className="dash_component p_t_30" style={{ alignItems:"start" }} lg={4} md={3} sm={10} xs={12} >
+            <div className="dash_add_style">
+
+
+              <div className=" p_t_30 p_10">
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">اسم المساهم</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={userId}
+                    label="user name"
+                    onChange={handleChangeUserId}
+                  >
+                    {
+                      users.map((item)=>{
+                        return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                      })
+                    }
+                  </Select>
+                </FormControl>
+                  
+
+              </div>
+              <div className=" p_10">
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">نوعية المساهمة</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={typeId}
+                    label="نوعية المساهمة"
+                    onChange={handleChangeTypeId}
+                  >
+                    {
+                      types.map((item)=>{
+                        return(<MenuItem value={item.id}> {item.name} </MenuItem>)
+                      })
+                    }
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="p_10">
+                <TextField onChange={handleChangeMony} type="number"  fullWidth id="outlined-basic" label="المبلغ" variant="outlined" />
+              </div>
+              <div className="p_10"> 
+                <label> تاريخ أداء المساهمة </label>
+                <label>التاريخ مهم لحساب الزكاة</label>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={['DatePicker']}>
+                    <DatePicker onChange={handleChangeDate} label="" />
+                  </DemoContainer>
+                </LocalizationProvider>
+              </div>
+              <div>
+                <Button onClick={()=>addData()} className="m_t_30"> حفظ البيانات </Button>
+              </div>
+            </div>
+        </Col>
+
         <Col className=" p_t_30 dash_component" lg={8} md={9} sm={12}>
 
           <div className="filter">
@@ -364,63 +424,12 @@ export default function Contributions() {
             </Table>
           </TableContainer>
         </Col>
-        <Col className="dash_component p_t_30" style={{ alignItems:"start" }} lg={4} md={3} sm={10} xs={12} >
-          <div className=" p_t_30 p_10">
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">اسم المساهم</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={userId}
-                label="user name"
-                onChange={handleChangeUserId}
-              >
-                {
-                  users.map((item)=>{
-                    return(<MenuItem value={item.id}> {item.name} </MenuItem>)
-                  })
-                }
-              </Select>
-            </FormControl>
-              
 
-          </div>
-          <div className=" p_10">
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">نوعية المساهمة</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={typeId}
-                label="نوعية المساهمة"
-                onChange={handleChangeTypeId}
-              >
-                {
-                  types.map((item)=>{
-                    return(<MenuItem value={item.id}> {item.name} </MenuItem>)
-                  })
-                }
-              </Select>
-            </FormControl>
-              
-
-          </div>
-          <div className="p_10">
-            <TextField onChange={handleChangeMony} type="number"  fullWidth id="outlined-basic" label="المبلغ" variant="outlined" />
-          </div>
-          <div className="p_10"> 
-            <label> تاريخ أداء المساهمة </label>
-            <label>التاريخ مهم لحساب الزكاة</label>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DatePicker']}>
-                <DatePicker onChange={handleChangeDate} label="" />
-              </DemoContainer>
-            </LocalizationProvider>
-          </div>
+      </Row>
+      <Row className='fullWidth m_t_50 justify-content-center'>
           <div>
-            <Button onClick={()=>addData()} className="m_t_30"> حفظ البيانات </Button>
+              <Button href={url+"export_donations"} className="m_t_30">  تحميل ملف البيانات  <FileDownloadIcon/></Button>
           </div>
-        </Col>
       </Row>
 
       <Dialog

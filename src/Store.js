@@ -36,7 +36,7 @@ const modeSlice = createSlice({
             if(value.payload===1)
                 window.location.href = '/admin/home';
             else if(value.payload===2)
-                window.location.href = '/';
+                window.location.href = '/profile';
         }
     }
 })

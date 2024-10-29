@@ -47,6 +47,7 @@ const Header=()=>{
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 
                 </Typography>
+                <Button hidden={acc!=="2" } href='./profile' style={{ margin:"4px" }} color="inherit"> الحساب </Button>
                 <Button hidden={!(acc==="1" || acc==="2") } onClick={()=>LogOut()} style={{ margin:"4px" }} color="inherit">تسجيل خروج</Button>
                 <Button hidden={acc==="1" || acc==="2" } href='./login' style={{ margin:"4px"}} color="inherit">تسجيل دخول</Button>
                 <B_Button hidden={acc==="1" || acc==="2" } href='./register' style={{ margin:"4px" }} color="inherit">حساب جديد</B_Button>
